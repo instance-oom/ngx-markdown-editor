@@ -28,7 +28,9 @@
     "@angular/forms": "^4.2.4"
   },
   "devDependencies": {
+    "@angular/common": "^4.2.5",
     "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4"
+    "@angular/forms": "^4.2.4",
+    "@angular/platform-browser": "^4.2.5"
   }
 }
