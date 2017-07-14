@@ -34,6 +34,36 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   @Input()
   height: string = "300px";
 
+  @Input()
+  get mode(): string {
+    return this._mode || 'editor';
+  }
+  set mode(value: string) {
+    if (!value || (value.toLowerCase() !== 'editor' && value.toLowerCase() !== 'preview')) {
+      value = 'editor';
+    }
+    this._mode = value;
+  }
+  _mode: string;
+
+
+  @Input()
+  get options(): any {
+    return this._options;
+  }
+  set options(value: any) {
+    this._options = value || {
+      showBorder: true,
+      hideIcons: []
+    };
+    this._hideIcons = {};
+    (this._options.hideIcons || []).forEach((v: any) => {
+      this._hideIcons[v] = true;
+    });
+  }
+  _options: any;
+  _hideIcons: any = {};
+
   get markdownValue(): any {
     return this._markdownValue || '';
   }
@@ -96,7 +126,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.editor.getSession().setMode('ace/model/javascript');
     this.editor.getSession().setValue(this.markdownValue);
 
-    this.editor.on("change", (e) => {
+    this.editor.on("change", (e: any) => {
       let val = this.editor.getValue();
       this.markdownValue = val;
     });

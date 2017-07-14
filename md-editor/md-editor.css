@@ -35,21 +35,21 @@
   padding: 6px;
 }
 
-.md-editor-container .tool-bar .btn-group::after {
+.md-editor-container .tool-bar .btn-group > .btn:first-child::before {
   content: ' ';
   background-color: darkgray;
   width: 1px;
   height: 24px;
-  right: -3px;
-  top: 9px;
+  left: -9px;
+  top: 2px;
   position: absolute;
 }
 
-.md-editor-container .tool-bar .btn-group:last-child::after {
+.md-editor-container .tool-bar .btn-group:first-child > .btn:first-child::before {
   display: none;
 }
 
-.md-editor-container .tool-bar .btn-group.hide-split::after {
+.md-editor-container .tool-bar .btn-group.hide-split > .btn:first-child::before {
   display: none;
 }
 
