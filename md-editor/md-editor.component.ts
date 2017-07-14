@@ -43,7 +43,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     if (value !== null && value !== undefined) {
       if (this._renderMarkTimeout) clearTimeout(this._renderMarkTimeout);
       this._renderMarkTimeout = setTimeout(() => {
-        let html = marked(this._markdownValue || '');
+        let html = marked(this._markdownValue || '', this._markedOpt);
         this._previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
       }, 100);
     }
@@ -57,7 +57,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   showPreviewPanel: boolean = true;
   isFullScreen: boolean = false;
 
-  _markedRender: any;
+  _markedOpt: any;
   _previewHtml: any;
 
   _onChange = (_: any) => { };
@@ -72,13 +72,20 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   ngOnInit() {
-    this._markedRender = new marked.Renderer();
-    this._markedRender.code = (code: any, language: any) => {
-      const validLang = !!(language && hljs.getLanguage(language));
-      const highlighted = validLang ? hljs.highlight(language, code).value : code;
+    let _markedRender = new marked.Renderer();
+    _markedRender.code = (code: any, language: any) => {
+      let validLang = !!(language && hljs.getLanguage(language));
+      let highlighted = validLang ? hljs.highlight(language, code).value : code;
       return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
     };
-    marked.setOptions(this._markedRender);
+    _markedRender.table = (header: string, body: string) => {
+      return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
+    };
+
+    this._markedOpt = {
+      renderer: _markedRender,
+      highlight: (code: any) => hljs.highlightAuto(code).value
+    };
   }
 
   ngAfterViewInit() {
