@@ -11,6 +11,7 @@ Angular markdown editor based on ace editor
 
 ```html
 <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/agate.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/ace/1.2.8/ace.js"></script>
 <script src="https://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
