@@ -43,12 +43,19 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 export class AppModule { }
 ```
 ```html
-<md-editor name="Content" [(ngModel)]="content" [height]="'200px'" required maxlength="500"></md-editor>
+<md-editor name="Content" [(ngModel)]="content" [height]="'200px'" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
 ```
 
 # Options
 - ngModel: markdown original content
 - height: editor height
 - hideToolbar: hide toolbar, default is false
+- mode: `editor` | `preview`, default is `editor`
+- options: other settings for editor
+  ```javascript
+  {
+    "hideIcons": ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']  // default is empty, the value is case-sensitive
+  }
+  ```
 - required: for form validate
 - maxlength: for form validate
