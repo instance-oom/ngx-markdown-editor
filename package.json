@@ -1,6 +1,6 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {
@@ -24,13 +24,15 @@
   },
   "homepage": "https://github.com/lon-yang/ngx-markdown-editor#readme",
   "peerDependencies": {
-    "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4"
+    "@angular/common": "^4.2.5",
+    "@angular/core": "^4.2.5",
+    "@angular/forms": "^4.2.5",
+    "@angular/platform-browser": "^4.2.5"
   },
   "devDependencies": {
     "@angular/common": "^4.2.5",
-    "@angular/core": "^4.2.4",
-    "@angular/forms": "^4.2.4",
+    "@angular/core": "^4.2.5",
+    "@angular/forms": "^4.2.5",
     "@angular/platform-browser": "^4.2.5"
   }
 }
