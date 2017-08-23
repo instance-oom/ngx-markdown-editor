@@ -112,6 +112,17 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
     };
 
+    _markedRender.listitem = (text: any) => {
+      if (/^\s*\[[x ]\]\s*/.test(text)) {
+        text = text
+          .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o" style="margin: 0 0.2em 0.25em -1.6em;"></i> ')
+          .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square" style="margin: 0 0.2em 0.25em -1.6em;"></i> ');
+        return `<li style="list-style: none;">${text}</li>`;
+      } else {
+        return `<li>${text}</li>`;
+      }
+    };
+
     this._markedOpt = {
       renderer: _markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
