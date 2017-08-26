@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef, Renderer, Attribute, Input } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -26,7 +26,7 @@ declare let hljs: any;
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
 
-  @ViewChild('aceEditor') aceEditorContainer;
+  @ViewChild('aceEditor') aceEditorContainer:ElementRef;
 
   @Input()
   hideToolbar: boolean = false;
