@@ -26,7 +26,8 @@ declare let hljs: any;
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
 
-  @ViewChild('aceEditor') aceEditorContainer:ElementRef;
+  @ViewChild('aceEditor')
+  aceEditorContainer: ElementRef;
 
   @Input()
   hideToolbar: boolean = false;
