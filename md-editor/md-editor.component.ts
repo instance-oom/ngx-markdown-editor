@@ -151,7 +151,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     setTimeout(() => {
       this.markdownValue = value;
       if (typeof value !== 'undefined' && this.editor) {
-        this.editor.getSession().setValue(value);
+        this.editor.getSession().setValue(value || '');
       }
     }, 1);
   }
