@@ -135,8 +135,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.editor = ace.edit(editorElement);
     this.editor.$blockScrolling = Infinity;
     this.editor.getSession().setUseWrapMode(true);
-    this.editor.getSession().setMode('ace/model/javascript');
-    this.editor.getSession().setValue(this.markdownValue);
+    this.editor.getSession().setMode("ace/mode/markdown");
+    this.editor.setValue(this.markdownValue || '');
 
     this.editor.on("change", (e: any) => {
       let val = this.editor.getValue();
@@ -151,7 +151,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     setTimeout(() => {
       this.markdownValue = value;
       if (typeof value !== 'undefined' && this.editor) {
-        this.editor.getSession().setValue(value || '');
+        this.editor.setValue(value || '');
       }
     }, 1);
   }
