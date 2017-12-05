@@ -36,6 +36,9 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   height: string = "300px";
 
   @Input()
+  preRender: Function;
+
+  @Input()
   get mode(): string {
     return this._mode || 'editor';
   }
@@ -69,6 +72,9 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     return this._markdownValue || '';
   }
   set markdownValue(value: any) {
+    if (this.preRender && this.preRender instanceof Function) {
+      value = this.preRender(value);
+    }
     this._markdownValue = value;
     this._onChange(value);
     if (value !== null && value !== undefined) {
