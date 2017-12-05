@@ -72,15 +72,16 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     return this._markdownValue || '';
   }
   set markdownValue(value: any) {
+    this._markdownValue = value;
+    this._onChange(value);
+
     if (this.preRender && this.preRender instanceof Function) {
       value = this.preRender(value);
     }
-    this._markdownValue = value;
-    this._onChange(value);
     if (value !== null && value !== undefined) {
       if (this._renderMarkTimeout) clearTimeout(this._renderMarkTimeout);
       this._renderMarkTimeout = setTimeout(() => {
-        let html = marked(this._markdownValue || '', this._markedOpt);
+        let html = marked(value || '', this._markedOpt);
         this._previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
       }, 100);
     }
