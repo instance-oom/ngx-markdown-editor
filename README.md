@@ -43,7 +43,7 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 export class AppModule { }
 ```
 ```html
-<md-editor name="Content" [(ngModel)]="content" [height]="'200px'" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
+<md-editor name="Content" [preRender]="preRenderFunc" [(ngModel)]="content" [height]="'200px'" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
 ```
 
 # Options
@@ -55,6 +55,12 @@ export class AppModule { }
   ```javascript
   {
     "hideIcons": ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']  // default is empty, the value is case-sensitive
+  }
+  ```
+- preRender(`Function`): For [#13](https://github.com/lon-yang/ngx-markdown-editor/issues/13), this will not effect `ngModel`'s value, just rendered value
+  ```javascript
+  preRenderFunc(content: string) {
+    return content.replace(/something/g, 'new value'); // must return a string
   }
   ```
 - required: for form validate
