@@ -10,6 +10,7 @@ Angular markdown editor based on ace editor
 - Add `Ace`、`marked`、`highlight` and `fortawesome` lib
 
 ```html
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/agate.min.css" rel="stylesheet">
 <script src="https://cdn.bootcss.com/ace/1.2.8/ace.js"></script>
