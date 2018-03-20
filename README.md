@@ -3,7 +3,7 @@ Angular markdown editor based on ace editor
 
 [![peerDependencies Status](https://david-dm.org/lon-yang/ngx-markdown-editor/peer-status.svg)](https://david-dm.org/lon-yang/ngx-markdown-editor?type=peer)
 [![npm version](https://badge.fury.io/js/ngx-markdown-editor.svg)](https://badge.fury.io/js/ngx-markdown-editor)
-[![licence](https://img.shields.io/npm/l/ngx-markdown-editor.svg)](https://opensource.org/licenses/Apache2.0)
+[![GitHub license](https://img.shields.io/github/license/lon-yang/ngx-markdown-editor.svg)](https://github.com/lon-yang/ngx-markdown-editor/blob/master/LICENSE)
 
 # Usage
 
