@@ -1,10 +1,10 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {
-
+    "build": "ng-packagr -p package.json"
   },
   "repository": {
     "type": "git",
@@ -25,15 +25,24 @@
   },
   "homepage": "https://github.com/lon-yang/ngx-markdown-editor#readme",
   "peerDependencies": {
-    "@angular/common": ">=4.2.5",
-    "@angular/core": ">=4.2.5",
-    "@angular/forms": ">=4.2.5",
-    "@angular/platform-browser": ">=4.2.5"
+    "@angular/common": ">=5.0.0",
+    "@angular/core": ">=5.0.0",
+    "@angular/forms": ">=5.0.0",
+    "@angular/platform-browser": ">=5.0.0"
   },
   "devDependencies": {
-    "@angular/common": "^4.2.5",
-    "@angular/core": "^4.2.5",
-    "@angular/forms": "^4.2.5",
-    "@angular/platform-browser": "^4.2.5"
+    "@angular/common": "^5.2.9",
+    "@angular/compiler": "^5.2.9",
+    "@angular/compiler-cli": "^5.2.9",
+    "@angular/core": "^5.2.9",
+    "@angular/forms": "^5.2.9",
+    "@angular/platform-browser": "^5.2.9",
+    "ng-packagr": "^2.2.0",
+    "typescript": "^2.7.2"
+  },
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
   }
 }
