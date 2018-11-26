@@ -58,7 +58,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   set options(value: any) {
     this._options = value || {
       showBorder: true,
-      hideIcons: []
+      hideIcons: [],
+      scrollPastEnd: 0
     };
     this._hideIcons = {};
     (this._options.hideIcons || []).forEach((v: any) => {
@@ -144,6 +145,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.editor.getSession().setUseWrapMode(true);
     this.editor.getSession().setMode("ace/mode/markdown");
     this.editor.setValue(this.markdownValue || '');
+    this.editor.setOption('scrollPastEnd', this._options.scrollPastEnd);
 
     this.editor.on("change", (e: any) => {
       let val = this.editor.getValue();
