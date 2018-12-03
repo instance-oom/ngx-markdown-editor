@@ -1,3 +1,7 @@
+## 1.1.8
+
+- Support for ace editor `scrollPastEnd` option
+
 ## 1.1.7
 
 - Fix [#14](https://github.com/lon-yang/ngx-markdown-editor/issues/14)
