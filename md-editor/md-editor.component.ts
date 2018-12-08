@@ -66,7 +66,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       this._hideIcons[v] = true;
     });
   }
-  _options: any;
+  _options: any = {};
   _hideIcons: any = {};
 
   get markdownValue(): any {
@@ -145,7 +145,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.editor.getSession().setUseWrapMode(true);
     this.editor.getSession().setMode("ace/mode/markdown");
     this.editor.setValue(this.markdownValue || '');
-    this.editor.setOption('scrollPastEnd', this._options.scrollPastEnd);
+    this.editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
 
     this.editor.on("change", (e: any) => {
       let val = this.editor.getValue();
