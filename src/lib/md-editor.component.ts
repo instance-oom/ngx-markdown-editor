@@ -1,7 +1,7 @@
 import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdEditorOption } from './md-editor';
+import { MdEditorOption } from './md-editor.types';
 
 declare let ace: any;
 declare let marked: any;

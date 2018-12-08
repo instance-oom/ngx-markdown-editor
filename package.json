@@ -40,10 +40,5 @@
     "ng-packagr": "^4.4.0",
     "tsickle": "^0.34.0",
     "typescript": "^3.1.6"
-  },
-  "ngPackage": {
-    "lib": {
-      "entryFile": "index.ts"
-    }
   }
 }
