@@ -55,8 +55,11 @@ export class AppModule { }
 - mode: `editor` | `preview`, default is `editor`
 - options: other settings for editor
   ```javascript
-  {
-    "hideIcons": ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']  // default is empty, the value is case-sensitive
+  {  
+    showBorder: boolean       // Show editor component's border. Default is true
+    hideIcons: Array<string>  // ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
+    scrollPastEnd: number     // The option for ace editor. Default is 0
+    enablePreviewContentClick: boolean  // Allow user fire the click event on the preview panel, like href etc. Default is false
   }
   ```
 - preRender(`Function`): For [#13](https://github.com/lon-yang/ngx-markdown-editor/issues/13), this will not effect `ngModel`'s value, just rendered value
