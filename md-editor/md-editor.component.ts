@@ -1,6 +1,7 @@
 import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MdEditorOption } from './md-editor';
 
 declare let ace: any;
 declare let marked: any;
@@ -26,53 +27,45 @@ declare let hljs: any;
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
 
-  @ViewChild('aceEditor')
-  aceEditorContainer: ElementRef;
+  @ViewChild('aceEditor') public aceEditorContainer: ElementRef;
+  @Input() public hideToolbar: boolean = false;
+  @Input() public height: string = "300px";
+  @Input() public preRender: Function;
 
   @Input()
-  hideToolbar: boolean = false;
-
-  @Input()
-  height: string = "300px";
-
-  @Input()
-  preRender: Function;
-
-  @Input()
-  get mode(): string {
+  public get mode(): string {
     return this._mode || 'editor';
   }
-  set mode(value: string) {
+  public set mode(value: string) {
     if (!value || (value.toLowerCase() !== 'editor' && value.toLowerCase() !== 'preview')) {
       value = 'editor';
     }
     this._mode = value;
   }
-  _mode: string;
-
+  private _mode: string;
 
   @Input()
-  get options(): any {
+  public get options(): MdEditorOption {
     return this._options;
   }
-  set options(value: any) {
-    this._options = value || {
-      showBorder: true,
-      hideIcons: [],
-      scrollPastEnd: 0
-    };
-    this._hideIcons = {};
-    (this._options.hideIcons || []).forEach((v: any) => {
-      this._hideIcons[v] = true;
-    });
+  public set options(value: MdEditorOption) {
+    this._options = Object.assign(this._defaultOption, {}, value);
+    this.hideIcons = {};
+    if (this._options.hideIcons) {
+      this._options.hideIcons.forEach((v: any) => this.hideIcons[v] = true);
+    }
   }
-  _options: any = {};
-  _hideIcons: any = {};
+  private _options: any = {};
 
-  get markdownValue(): any {
+  public hideIcons: any = {};
+  public showPreviewPanel: boolean = true;
+  public isFullScreen: boolean = false;
+  public previewHtml: any;
+
+  public get markdownValue(): any {
     return this._markdownValue || '';
   }
-  set markdownValue(value: any) {
+  public set markdownValue(value: any) {
     this._markdownValue = value;
     this._onChange(value);
 
@@ -83,24 +76,23 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       if (this._renderMarkTimeout) clearTimeout(this._renderMarkTimeout);
       this._renderMarkTimeout = setTimeout(() => {
         let html = marked(value || '', this._markedOpt);
-        this._previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
+        this.previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
       }, 100);
     }
   }
-  _markdownValue: any;
+  private _markdownValue: any;
 
-  _renderMarkTimeout: any;
-
-  editor: any;
-
-  showPreviewPanel: boolean = true;
-  isFullScreen: boolean = false;
-
-  _markedOpt: any;
-  _previewHtml: any;
-
-  _onChange = (_: any) => { };
-  _onTouched = () => { };
+  private _editor: any;
+  private _renderMarkTimeout: any;
+  private _markedOpt: any;
+  private _defaultOption: MdEditorOption = {
+    showBorder: true,
+    hideIcons: [],
+    scrollPastEnd: 0,
+    enablePreviewContentClick: false
+  };
+  private _onChange = (_: any) => { };
+  private _onTouched = () => { };
 
   constructor(
     @Attribute('required') public required: boolean = false,
@@ -111,17 +103,17 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   ngOnInit() {
-    let _markedRender = new marked.Renderer();
-    _markedRender.code = (code: any, language: any) => {
+    let markedRender = new marked.Renderer();
+    markedRender.code = (code: any, language: any) => {
       let validLang = !!(language && hljs.getLanguage(language));
       let highlighted = validLang ? hljs.highlight(language, code).value : code;
       return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
     };
-    _markedRender.table = (header: string, body: string) => {
+    markedRender.table = (header: string, body: string) => {
       return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
     };
 
-    _markedRender.listitem = (text: any) => {
+    markedRender.listitem = (text: any) => {
       if (/^\s*\[[x ]\]\s*/.test(text)) {
         text = text
           .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o" style="margin: 0 0.2em 0.25em -1.6em;"></i> ')
@@ -133,22 +125,22 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     };
 
     this._markedOpt = {
-      renderer: _markedRender,
+      renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
   }
 
   ngAfterViewInit() {
     let editorElement = this.aceEditorContainer.nativeElement;
-    this.editor = ace.edit(editorElement);
-    this.editor.$blockScrolling = Infinity;
-    this.editor.getSession().setUseWrapMode(true);
-    this.editor.getSession().setMode("ace/mode/markdown");
-    this.editor.setValue(this.markdownValue || '');
-    this.editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
+    this._editor = ace.edit(editorElement);
+    this._editor.$blockScrolling = Infinity;
+    this._editor.getSession().setUseWrapMode(true);
+    this._editor.getSession().setMode("ace/mode/markdown");
+    this._editor.setValue(this.markdownValue || '');
+    this._editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
 
-    this.editor.on("change", (e: any) => {
-      let val = this.editor.getValue();
+    this._editor.on("change", (e: any) => {
+      let val = this._editor.getValue();
       this.markdownValue = val;
     });
   }
@@ -159,8 +151,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   writeValue(value: any | Array<any>): void {
     setTimeout(() => {
       this.markdownValue = value;
-      if (typeof value !== 'undefined' && this.editor) {
-        this.editor.setValue(value || '');
+      if (typeof value !== 'undefined' && this._editor) {
+        this._editor.setValue(value || '');
       }
     }, 1);
   }
@@ -185,12 +177,12 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   insertContent(type: string) {
-    if (!this.editor) return;
-    let selectedText = this.editor.getSelectedText();
-    let isSeleted = !!selectedText;
+    if (!this._editor) return;
+    let selectedText = this._editor.getSelectedText();
+    let isSelected = !!selectedText;
     let startSize = 2;
     let initText: string = '';
-    let range = this.editor.selection.getRange();
+    let range = this._editor.selection.getRange();
     switch (type) {
       case 'Bold':
         initText = 'Bold Text';
@@ -229,13 +221,13 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         startSize = 3;
         break;
     }
-    this.editor.session.replace(range, selectedText);
-    if (!isSeleted) {
+    this._editor.session.replace(range, selectedText);
+    if (!isSelected) {
       range.start.column += startSize;
       range.end.column = range.start.column + initText.length;
-      this.editor.selection.setRange(range);
+      this._editor.selection.setRange(range);
     }
-    this.editor.focus();
+    this._editor.focus();
   }
 
   togglePreview() {
@@ -244,8 +236,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   previewPanelClick(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
+    if (this.options.enablePreviewContentClick !== true) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
   }
 
   fullScreen() {
@@ -255,10 +249,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   editorResize(timeOut: number = 100) {
-    if (this.editor) {
+    if (this._editor) {
       setTimeout(() => {
-        this.editor.resize();
-        this.editor.focus();
+        this._editor.resize();
+        this._editor.focus();
       }, timeOut);
     }
   }

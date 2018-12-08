@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { MarkdownEditorComponent } from './md-editor/md-editor.component';
 
-export * from './md-editor/md-editor.component';
+export { MarkdownEditorComponent } from './md-editor/md-editor.component';
+export { MdEditorOption } from './md-editor/md-editor';
 
 @NgModule({
   declarations: [

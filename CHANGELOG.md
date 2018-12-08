@@ -1,3 +1,9 @@
+## 1.1.9
+
+- Fix `scrollPastEnd` option's bug
+- Add `enablePreviewContentClick` option to enable preview panel content's click [#22](https://github.com/lon-yang/ngx-markdown-editor/issues/22)
+
+
 ## 1.1.8
 
 - Support for ace editor `scrollPastEnd` option
