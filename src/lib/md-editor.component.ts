@@ -136,7 +136,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this._editor.$blockScrolling = Infinity;
     this._editor.getSession().setUseWrapMode(true);
     this._editor.getSession().setMode("ace/mode/markdown");
-    this._editor.setValue(this.markdownValue || '');
+    this._editor.setValue(this.markdownValue || '', 1);
     this._editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
 
     this._editor.on("change", (e: any) => {
@@ -146,13 +146,14 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   ngOnDestroy() {
+    this._editor && this._editor.destroy();
   }
 
   writeValue(value: any | Array<any>): void {
     setTimeout(() => {
       this.markdownValue = value;
       if (typeof value !== 'undefined' && this._editor) {
-        this._editor.setValue(value || '');
+        this._editor.setValue(value || '', 1);        
       }
     }, 1);
   }

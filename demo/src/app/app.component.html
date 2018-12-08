@@ -1,0 +1,21 @@
+<div style="margin: 20px">
+  <form novalidate #form="ngForm">
+    <md-editor #md="ngModel" name="Content" [(ngModel)]="content" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
+  </form>
+  <div class="well well-sm">
+    <button class="btn btn-default" (click)="changeMode()">Change Mode (Current: {{ mode }})</button>
+    &nbsp;&nbsp;
+    <button class="btn btn-default" (click)="togglePreviewClick()">
+      {{ options?.enablePreviewContentClick ? 'Disable' : 'Enable' }} PreviewContentClick
+    </button>
+  </div>
+  <div class="well well-sm">
+    <label class="control-label">NgModel:</label>
+    <textarea class="form-control" rows="10" readonly [value]="content"></textarea>
+  </div>
+  <div class="well well-sm">
+    <label class="control-label">Form validate:</label>
+    <p>Required: {{ md?.errors?.required }}</p>
+    <p>Maxlength: {{ md?.errors?.maxlength | json }}</p>
+  </div>
+</div>
