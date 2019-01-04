@@ -45,7 +45,16 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 export class AppModule { }
 ```
 ```html
-<md-editor name="Content" [preRender]="preRenderFunc" [(ngModel)]="content" [height]="'200px'" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
+<md-editor name="Content" 
+  [upload]="doUpload" 
+  [preRender]="preRenderFunc" 
+  [(ngModel)]="content" 
+  [height]="'200px'" 
+  [mode]="mode" 
+  [options]="options" 
+  required 
+  maxlength="500">
+</md-editor>
 ```
 
 # Options
@@ -63,10 +72,22 @@ export class AppModule { }
   }
   ```
 - preRender(`Function`): For [#13](https://github.com/lon-yang/ngx-markdown-editor/issues/13), this will not effect `ngModel`'s value, just rendered value
-  ```javascript
+  ```ts
   preRenderFunc(content: string) {
     return content.replace(/something/g, 'new value'); // must return a string
   }
   ```
+- upload(`Function`): For [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24), upload file by yourself
+  ```ts
+  doUpload(files: Array<File>): Promise<Array<UploadResult>> {
+    // do upload file
+  }
+  interface UploadResult {
+    isImg: boolean
+    name: string
+    url: string
+  }
+  ```
+
 - required: for form validate
 - maxlength: for form validate

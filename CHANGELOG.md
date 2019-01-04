@@ -1,3 +1,7 @@
+## 1.1.10
+
+- Fix [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24)
+
 ## 1.1.9
 
 - Fix `scrollPastEnd` option's bug
