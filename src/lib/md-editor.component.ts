@@ -31,6 +31,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   @Input() public hideToolbar: boolean = false;
   @Input() public height: string = "300px";
   @Input() public preRender: Function;
+  @Input() public upload: Function;
 
   @Input()
   public get mode(): string {
@@ -61,6 +62,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public showPreviewPanel: boolean = true;
   public isFullScreen: boolean = false;
   public previewHtml: any;
+  public dragover: boolean = false;
+  public isUploading: boolean = false;
 
   public get markdownValue(): any {
     return this._markdownValue || '';
@@ -91,6 +94,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     scrollPastEnd: 0,
     enablePreviewContentClick: false
   };
+  private get _hasUploadFunction(): boolean {
+    return this.upload && this.upload instanceof Function;
+  }
+
   private _onChange = (_: any) => { };
   private _onTouched = () => { };
 
@@ -112,7 +119,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     markedRender.table = (header: string, body: string) => {
       return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
     };
-
     markedRender.listitem = (text: any) => {
       if (/^\s*\[[x ]\]\s*/.test(text)) {
         text = text
@@ -123,7 +129,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         return `<li>${text}</li>`;
       }
     };
-
     this._markedOpt = {
       renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
@@ -153,7 +158,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     setTimeout(() => {
       this.markdownValue = value;
       if (typeof value !== 'undefined' && this._editor) {
-        this._editor.setValue(value || '', 1);        
+        this._editor.setValue(value || '', 1);
       }
     }, 1);
   }
@@ -177,7 +182,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     return result;
   }
 
-  insertContent(type: string) {
+  insertContent(type: string, customContent?: string) {
     if (!this._editor) return;
     let selectedText = this._editor.getSelectedText();
     let isSelected = !!selectedText;
@@ -221,6 +226,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         selectedText = "```language\r\n" + (selectedText || initText) + "\r\n```";
         startSize = 3;
         break;
+      case 'Custom':
+        selectedText = customContent;
+        startSize = 0;
+        break;
     }
     this._editor.session.replace(range, selectedText);
     if (!isSelected) {
@@ -256,5 +265,58 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         this._editor.focus();
       }, timeOut);
     }
+  }
+
+  onDragover(evt: DragEvent) {
+    evt.stopImmediatePropagation();
+    evt.preventDefault();
+    if (!this._hasUploadFunction) return;
+    this.dragover = true;
+  }
+
+  onDrop(evt: DragEvent) {
+    evt.stopImmediatePropagation();
+    evt.preventDefault();
+    if (!this._hasUploadFunction || this.isUploading) return;
+
+    if (!evt.dataTransfer.files || evt.dataTransfer.files.length === 0) {
+      this.dragover = false;
+      return;
+    }
+
+    this.isUploading = true;
+    Promise.resolve()
+      .then(() => {
+        return this.upload(evt.dataTransfer.files);
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          let msg = [];
+          for (let item of data) {
+            let tempMsg = `[${item.name}](${item.url})`;
+            if (item.isImg) {
+              tempMsg = `!${tempMsg}`;
+            }
+            msg.push(tempMsg);
+          }
+          this.insertContent('Custom', msg.join('\r\n'));
+        } else {
+          console.warn('Invalid upload result. Please using follow this type `UploadResult`.')
+        }
+        this.isUploading = false;
+        this.dragover = false;
+      })
+      .catch(err => {
+        console.error(err);
+        this.isUploading = false;
+        this.dragover = false;
+      });
+  }
+
+  onDragleave(evt: DragEvent) {
+    evt.stopImmediatePropagation();
+    evt.preventDefault();
+    if (!this._hasUploadFunction) return;
+    this.dragover = false;
   }
 }

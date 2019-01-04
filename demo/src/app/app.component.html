@@ -1,6 +1,6 @@
 <div style="margin: 20px">
   <form novalidate #form="ngForm">
-    <md-editor #md="ngModel" name="Content" [(ngModel)]="content" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
+    <md-editor #md="ngModel" name="Content" [upload]="doUpload" [(ngModel)]="content" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
   </form>
   <div class="well well-sm">
     <button class="btn btn-default" (click)="changeMode()">Change Mode (Current: {{ mode }})</button>

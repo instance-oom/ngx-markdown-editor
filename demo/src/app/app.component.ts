@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadResult } from './../../../src/public_api';
 
 @Component({
   selector: 'app-root',
@@ -44,5 +45,21 @@ export class AppComponent {
   togglePreviewClick() {
     this.options.enablePreviewContentClick = !this.options.enablePreviewContentClick;
     this.options = Object.assign({}, this.options);
+  }
+
+  doUpload(files: Array<File>): Promise<Array<UploadResult>> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let result: Array<UploadResult> = [];
+        for (let file of files) {
+          result.push({
+            name: file.name,
+            url: `https://avatars3.githubusercontent.com/${file.name}`,
+            isImg: file.type.indexOf('image') !== -1
+          })
+        }
+        resolve(result);
+      }, 3000);
+    });
   }
 }

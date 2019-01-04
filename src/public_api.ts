@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownEditorComponent } from './lib/md-editor.component';
 
 export { MarkdownEditorComponent } from './lib/md-editor.component';
-export { MdEditorOption } from './lib/md-editor.types';
+export { MdEditorOption, UploadResult } from './lib/md-editor.types';
 
 @NgModule({
   declarations: [

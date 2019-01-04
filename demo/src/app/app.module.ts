@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { LMarkdownEditorModule } from './../../../dist';
+import { LMarkdownEditorModule } from './../../../src/public_api';
 
 @NgModule({
   declarations: [

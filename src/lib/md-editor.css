@@ -61,6 +61,46 @@
   display: flex;
 }
 
+.md-editor-container .editor-container>div .drag-container {
+  display: none;
+}
+
+.md-editor-container .editor-container>div.dragover {
+  position: relative;
+}
+
+.md-editor-container .editor-container>div.dragover .drag-container {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  color: white;
+}
+
+.md-editor-container .editor-container>div.dragover .drag-container.drag-container-mask {
+  background-color: transparent;
+  z-index: 11;
+}
+
+.md-editor-container .editor-container>div.dragover .drag-container .upload-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.md-editor-container .editor-container>div.dragover .drag-container .upload-loading .text {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
 .md-editor-container .editor-container>div {
   flex: 1;
 }
