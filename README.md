@@ -63,12 +63,13 @@ export class AppModule { }
 - hideToolbar: hide toolbar, default is false
 - mode: `editor` | `preview`, default is `editor`
 - options: other settings for editor
-  ```javascript
+  ```ts
   {  
-    showBorder: boolean       // Show editor component's border. Default is true
-    hideIcons: Array<string>  // ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
-    scrollPastEnd: number     // The option for ace editor. Default is 0
-    enablePreviewContentClick: boolean  // Allow user fire the click event on the preview panel, like href etc. Default is false
+    showBorder?: boolean       // Show editor component's border. Default is true
+    hideIcons?: Array<string>  // ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
+    scrollPastEnd?: number     // The option for ace editor. Default is 0
+    enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc. Default is false
+    markedjsOpt?: MarkedjsOption  // The markedjs option, see https://marked.js.org/#/USING_ADVANCED.md#options
   }
   ```
 - preRender(`Function`): For [#13](https://github.com/lon-yang/ngx-markdown-editor/issues/13), this will not effect `ngModel`'s value, just rendered value

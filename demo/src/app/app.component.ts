@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadResult } from './../../../src/public_api';
+import { UploadResult, MdEditorOption } from './../../../src/public_api';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +8,7 @@ import { UploadResult } from './../../../src/public_api';
 })
 export class AppComponent {
 
-  public options: any = {
+  public options: MdEditorOption = {
     enablePreviewContentClick: false
   };
   public content: string;

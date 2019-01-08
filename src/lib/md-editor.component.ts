@@ -47,7 +47,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   @Input()
   public get options(): MdEditorOption {
-    return this._options;
+    return this._options || {};
   }
   public set options(value: MdEditorOption) {
     this._options = Object.assign(this._defaultOption, {}, value);
@@ -129,10 +129,11 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         return `<li>${text}</li>`;
       }
     };
-    this._markedOpt = {
+    let markedjsOpt = {
       renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
+    this._markedOpt = Object.assign({}, this.options.markedjsOpt, markedjsOpt);
   }
 
   ngAfterViewInit() {
