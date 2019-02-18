@@ -9,7 +9,7 @@ declare let hljs: any;
 
 @Component({
   selector: 'md-editor',
-  styleUrls: ['./md-editor.css'],
+  styleUrls: ['./md-editor.scss'],
   templateUrl: './md-editor.html',
   providers: [
     {
@@ -86,13 +86,15 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private _markdownValue: any;
 
   private _editor: any;
+  private _editorResizeTimer: any;
   private _renderMarkTimeout: any;
   private _markedOpt: any;
   private _defaultOption: MdEditorOption = {
     showBorder: true,
     hideIcons: [],
     scrollPastEnd: 0,
-    enablePreviewContentClick: false
+    enablePreviewContentClick: false,
+    resizable: false
   };
   private get _hasUploadFunction(): boolean {
     return this.upload && this.upload instanceof Function;
@@ -259,13 +261,17 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.editorResize();
   }
 
+  mdEditorResize(size: any) {
+    this.editorResize();
+  }
+
   editorResize(timeOut: number = 100) {
-    if (this._editor) {
-      setTimeout(() => {
-        this._editor.resize();
-        this._editor.focus();
-      }, timeOut);
-    }
+    if (!this._editor) return
+    if (this._editorResizeTimer) clearTimeout(this._editorResizeTimer);
+    this._editorResizeTimer = setTimeout(() => {
+      this._editor.resize();
+      this._editor.focus();
+    }, timeOut);
   }
 
   onDragover(evt: DragEvent) {

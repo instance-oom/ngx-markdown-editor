@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Fix [#27](https://github.com/lon-yang/ngx-markdown-editor/issues/27), Support resizeable for component
+
 ## 1.1.11
 
 - Fix [#25](https://github.com/lon-yang/ngx-markdown-editor/issues/25), Support config markedjs

@@ -9,7 +9,8 @@ import { UploadResult, MdEditorOption } from './../../../src/public_api';
 export class AppComponent {
 
   public options: MdEditorOption = {
-    enablePreviewContentClick: false
+    enablePreviewContentClick: false,
+    resizable: true
   };
   public content: string;
   public mode: string = 'editor';
@@ -44,6 +45,11 @@ export class AppComponent {
 
   togglePreviewClick() {
     this.options.enablePreviewContentClick = !this.options.enablePreviewContentClick;
+    this.options = Object.assign({}, this.options);
+  }
+
+  toggleResizeAble() {
+    this.options.resizable = !this.options.resizable;
     this.options = Object.assign({}, this.options);
   }
 

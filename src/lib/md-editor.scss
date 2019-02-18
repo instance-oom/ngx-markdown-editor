@@ -1,0 +1,125 @@
+.md-editor-container {
+  position: relative;
+  height: 100%;
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  &.fullscreen {
+    margin: 0;
+    position: fixed;
+    border: 0;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 99999999;
+  }
+  &.md-editor-resizable:not(.fullscreen) {
+    resize: both;
+    overflow: auto;
+    display: inline-block;
+    width: 100%;
+    .md-footer {
+      z-index: -1;
+    }
+  }
+  .md-layout {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .tool-bar {
+      background-color: whitesmoke;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      .btn-group {
+        padding: 6px;
+        &:first-child>.btn:first-child::before {
+          display: none;
+        }
+        &>.btn:first-child::before {
+          content: ' ';
+          background-color: darkgray;
+          width: 1px;
+          height: 24px;
+          left: -9px;
+          top: 2px;
+          position: absolute;
+        }
+        &.hide-split>.btn:first-child::before {
+          display: none;
+        }
+      }
+      .btn {
+        margin-bottom: 0;
+      }
+    }
+    .editor-container {
+      flex: 1;
+      display: flex;
+      &>div {
+        flex: 1;
+      }
+      &>div .drag-container {
+        display: none;
+      }
+      &>div.dragover {
+        position: relative;
+        .drag-container {
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 10;
+          background-color: rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 50px;
+          color: white;
+          &.drag-container-mask {
+            background-color: transparent;
+            z-index: 11;
+          }
+          .upload-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .text {
+              font-size: 20px;
+              margin-top: 10px;
+            }
+          }
+        }
+      }
+      .editor-panel {
+        height: 100%;
+        .ace-editor {
+          height: 100%;
+          min-height: 100%;
+        }
+      }
+    }
+    .preview-panel {
+      height: 100%;
+      border-left: 1px solid rgba(0, 0, 0, 0.1);
+      background-color: white;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    .md-footer {
+      background-color: #f0f0f0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      .length-view {
+        flex: 1;
+        padding: 4px 2px 0 2px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+      .resize-btn {
+        width: 17px;
+      }
+    }
+  }
+}

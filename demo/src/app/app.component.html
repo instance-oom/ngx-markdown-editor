@@ -8,6 +8,10 @@
     <button class="btn btn-default" (click)="togglePreviewClick()">
       {{ options?.enablePreviewContentClick ? 'Disable' : 'Enable' }} PreviewContentClick
     </button>
+    &nbsp;&nbsp;
+    <button class="btn btn-default" (click)="toggleResizeAble()">
+      {{ options?.resizable ? 'Disable' : 'Enable' }} Resizeable
+    </button>
   </div>
   <div class="well well-sm">
     <label class="control-label">NgModel:</label>
