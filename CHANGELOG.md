@@ -1,3 +1,7 @@
+## 2.0.0
+
+- Support Angular8
+
 ## 1.2.0
 
 - Fix [#27](https://github.com/lon-yang/ngx-markdown-editor/issues/27), Support resizeable for component

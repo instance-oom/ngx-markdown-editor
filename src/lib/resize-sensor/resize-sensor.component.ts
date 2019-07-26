@@ -8,7 +8,7 @@ import { Component, NgZone, Input, Output, ViewChild, ElementRef, EventEmitter }
 
 export class MarkdownEditorResizeSensorComponent {
 
-  @ViewChild('resizeSensor') resizeSensor: ElementRef;
+  @ViewChild('resizeSensor', { static: true }) resizeSensor: ElementRef;
 
   @Input() interval: number = 500;
   @Output() resize: EventEmitter<any> = new EventEmitter<any>();
