@@ -8,24 +8,53 @@ Angular markdown editor based on ace editor
 
 # Usage
 
-- Add `Ace`、`marked`、`highlight` and `font-awesome` lib
+### Installation
 
-```html
-<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="https://cdn.bootcss.com/highlight.js/9.12.0/styles/agate.min.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/ace/1.2.8/ace.js"></script>
-<script src="https://cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
-<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+> Tips: This is a new way to add dependencies since `2.1.0`, and the old way is work fine too.
+
+Install dependencies from npm repository:
+```bash
+npm i brace bootstrap font-awesome
 ```
 
-- Install `ngx-markdown-editor`
-
+Install `ngx-markdown-editor` from npm repository:
 ```bash
 npm i ngx-markdown-editor
 ```
 
-- Use markdown-editor component
+Add the styles and scripts in `angular.json`:
+```json
+{
+  ...
+  "architect": {
+    "build": {
+      "options": {
+        ...
+        "styles": [
+          "node_modules/bootstrap/dist/css/bootstrap.min.css",
+          "node_modules/font-awesome/css/font-awesome.min.css",
+          "node_modules/ngx-markdown-editor/assets/highlight.js/agate.min.css"
+        ],
+        "scripts": [
+          "node_modules/ngx-markdown-editor/assets/highlight.js/highlight.min.js",
+          "node_modules/ngx-markdown-editor/assets/marked.min.js"
+        ]
+        ...
+      }
+    }
+  }
+  ...    
+}
+```
+
+Import `brace` in `polyfills.ts`
+
+```ts
+import 'brace';
+import 'brace/mode/markdown';
+```
+
+### Sample
 
 ```ts
 import { LMarkdownEditorModule } from 'ngx-markdown-editor';

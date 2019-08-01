@@ -1,3 +1,8 @@
+## 2.1.0
+
+- Support markedjs 0.7.0
+- Change the dependency import method. From `link`、`script` to `npm`
+
 ## 2.0.0
 
 - Support Angular8

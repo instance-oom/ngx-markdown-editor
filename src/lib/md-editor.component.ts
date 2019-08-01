@@ -121,12 +121,18 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     markedRender.table = (header: string, body: string) => {
       return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
     };
-    markedRender.listitem = (text: any) => {
-      if (/^\s*\[[x ]\]\s*/.test(text)) {
-        text = text
-          .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o" style="margin: 0 0.2em 0.25em -1.6em;"></i> ')
-          .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square" style="margin: 0 0.2em 0.25em -1.6em;"></i> ');
-        return `<li style="list-style: none;">${text}</li>`;
+    markedRender.listitem = (text: any, task: boolean, checked: boolean) => {
+      if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
+        if (text.startsWith('<input')) {
+          text = text
+            .replace('<input disabled="" type="checkbox">', '<i class="fa fa-square-o"></i>')
+            .replace('<input checked="" disabled="" type="checkbox">', '<i class="fa fa-check-square"></i>');
+        } else {
+          text = text
+            .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o"></i> ')
+            .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square"></i> ');
+        }
+        return `<li>${text}</li>`;
       } else {
         return `<li>${text}</li>`;
       }

@@ -29,6 +29,7 @@ export class AppComponent {
     contentArr.push('');
     contentArr.push('- [ ] Taks A');
     contentArr.push('- [x] Taks B');
+    contentArr.push('- test');
     contentArr.push('');
     contentArr.push('[Link](https://www.google.com)');
     contentArr.push('');
