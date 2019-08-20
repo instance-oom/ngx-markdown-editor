@@ -1,3 +1,8 @@
+## 2.1.1
+
+- Add `usingFontAwesome5` Option
+- Fix [#42](https://github.com/lon-yang/ngx-markdown-editor/issues/42)
+
 ## 2.1.0
 
 - Support markedjs 0.7.0

@@ -92,6 +92,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private _defaultOption: MdEditorOption = {
     showBorder: true,
     hideIcons: [],
+    usingFontAwesome5: false,
     scrollPastEnd: 0,
     enablePreviewContentClick: false,
     resizable: false
@@ -141,7 +142,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
-    this._markedOpt = Object.assign({}, this.options.markedjsOpt, markedjsOpt);
+    this._markedOpt = Object.assign({}, markedjsOpt, this.options.markedjsOpt);
   }
 
   ngAfterViewInit() {

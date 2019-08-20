@@ -3,6 +3,7 @@
   height: 100%;
   margin-bottom: 15px;
   border: 1px solid rgba(0, 0, 0, 0.1);
+
   &.fullscreen {
     margin: 0;
     position: fixed;
@@ -13,27 +14,76 @@
     height: 100% !important;
     z-index: 99999999;
   }
+
   &.md-editor-resizable:not(.fullscreen) {
     resize: both;
-    overflow: auto;
+    overflow: hidden;
     display: inline-block;
     width: 100%;
+
+    .md-layout .editor-container {
+      height: calc(100% - 70px);
+    }
+
     .md-footer {
       z-index: -1;
     }
   }
+
+  &.font-awesome5 {
+    .fa {
+      &.fa-bold {}
+
+      &.fa-italic {}
+
+      &.fa-header::before {
+        content: "\f1dc";
+      }
+
+      &.fa-quote-left {}
+
+      &.fa-link {}
+
+      &.fa-image {}
+
+      &.fa-list-ul {}
+
+      &.fa-list-ol {}
+
+      &.fa-file-code-o::before {
+        content: "\f121";
+      }
+
+      &.fa-eye {}
+
+      &.fa-eye-slash {}
+
+      &.fa-arrows-alt::before {
+        content: "\f065";
+      }
+
+      &.fa-upload {}
+
+      &.fa-spinner {}
+    }
+  }
+
   .md-layout {
     height: 100%;
     display: flex;
     flex-direction: column;
+
     .tool-bar {
       background-color: whitesmoke;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
       .btn-group {
         padding: 6px;
+
         &:first-child>.btn:first-child::before {
           display: none;
         }
+
         &>.btn:first-child::before {
           content: ' ';
           background-color: darkgray;
@@ -43,25 +93,33 @@
           top: 2px;
           position: absolute;
         }
+
         &.hide-split>.btn:first-child::before {
           display: none;
         }
       }
+
       .btn {
         margin-bottom: 0;
       }
     }
+
     .editor-container {
       flex: 1;
       display: flex;
+      height: calc(100% - 100px);
+
       &>div {
         flex: 1;
       }
+
       &>div .drag-container {
         display: none;
       }
+
       &>div.dragover {
         position: relative;
+
         .drag-container {
           display: block;
           position: absolute;
@@ -76,14 +134,17 @@
           justify-content: center;
           font-size: 50px;
           color: white;
+
           &.drag-container-mask {
             background-color: transparent;
             z-index: 11;
           }
+
           .upload-loading {
             display: flex;
             flex-direction: column;
             align-items: center;
+
             .text {
               font-size: 20px;
               margin-top: 10px;
@@ -91,14 +152,17 @@
           }
         }
       }
+
       .editor-panel {
         height: 100%;
+
         .ace-editor {
           height: 100%;
           min-height: 100%;
         }
       }
     }
+
     .preview-panel {
       height: 100%;
       border-left: 1px solid rgba(0, 0, 0, 0.1);
@@ -106,20 +170,27 @@
       padding: 10px;
       overflow-y: auto;
     }
+
     .md-footer {
       background-color: #f0f0f0;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
+
       .length-view {
         flex: 1;
         padding: 4px 2px 0 2px;
         font-size: 12px;
         line-height: 16px;
       }
+
       .resize-btn {
         width: 17px;
       }
     }
+  }
+
+  .pull-right {
+    float: right;
   }
 }

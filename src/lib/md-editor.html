@@ -1,4 +1,4 @@
-<div class="md-editor-container" [class.fullscreen]="isFullScreen" [class.md-editor-resizable]="options?.resizable"
+<div class="md-editor-container" [class.font-awesome5]="options?.usingFontAwesome5" [class.fullscreen]="isFullScreen" [class.md-editor-resizable]="options?.resizable"
   [style.height]="height">
   <div class="md-layout">
     <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
@@ -54,7 +54,7 @@
       <div class="btn-group pull-right hide-split">
         <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()"
           *ngIf="!hideIcons.FullScreen">
-          <i class="fa fa-arrows-alt"></i>
+          <i class="fa" [class.fa-arrows-alt]="!options?.usingFontAwesome5 || !isFullScreen" [class.fa-compress]="options?.usingFontAwesome5 && isFullScreen"></i>
         </button>
       </div>
     </div>
