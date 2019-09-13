@@ -1,6 +1,11 @@
+## 2.1.2
+
+- Add `showPreviewPanel` Option. (Default: `true`)
+- Fix [#43](https://github.com/lon-yang/ngx-markdown-editor/issues/43)
+
 ## 2.1.1
 
-- Add `usingFontAwesome5` Option
+- Add `usingFontAwesome5` Option. (Default: `false`)
 - Fix [#42](https://github.com/lon-yang/ngx-markdown-editor/issues/42)
 
 ## 2.1.0

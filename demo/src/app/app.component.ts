@@ -9,6 +9,7 @@ import { UploadResult, MdEditorOption } from './../../../src/public_api';
 export class AppComponent {
 
   public options: MdEditorOption = {
+    showPreviewPanel: false,
     enablePreviewContentClick: false,
     resizable: true
   };
@@ -34,6 +35,11 @@ export class AppComponent {
     contentArr.push('[Link](https://www.google.com)');
     contentArr.push('');
     this.content = contentArr.join('\r\n');
+  }
+
+  togglePreviewPanel() {
+    this.options.showPreviewPanel = !this.options.showPreviewPanel;
+    this.options = Object.assign({}, this.options);
   }
 
   changeMode() {

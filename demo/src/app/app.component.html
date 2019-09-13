@@ -1,18 +1,24 @@
 <div style="margin: 20px">
   <form novalidate #form="ngForm">
-    <md-editor #md="ngModel" name="Content" [upload]="doUpload" [(ngModel)]="content" [mode]="mode" [options]="options" required maxlength="500"></md-editor>
+    <md-editor #md="ngModel" name="Content" [upload]="doUpload" [(ngModel)]="content" [mode]="mode" [options]="options"
+      required maxlength="600" height="400px"></md-editor>
   </form>
   <div class="well well-sm">
-    <button class="btn btn-default" (click)="changeMode()">Change Mode (Current: {{ mode }})</button>
+    <button class="btn btn-default btn-primary" (click)="togglePreviewPanel()">
+      {{ options?.showPreviewPanel ? 'Hide' : 'Show' }} Preview Panel
+    </button>
     &nbsp;&nbsp;
-    <button class="btn btn-default" (click)="togglePreviewClick()">
+    <button class="btn btn-default btn-primary" (click)="changeMode()">Change Mode (Current: {{ mode }})</button>
+    &nbsp;&nbsp;
+    <button class="btn btn-default btn-primary" (click)="togglePreviewClick()">
       {{ options?.enablePreviewContentClick ? 'Disable' : 'Enable' }} PreviewContentClick
     </button>
     &nbsp;&nbsp;
-    <button class="btn btn-default" (click)="toggleResizeAble()">
+    <button class="btn btn-default btn-primary" (click)="toggleResizeAble()">
       {{ options?.resizable ? 'Disable' : 'Enable' }} Resizeable
     </button>
   </div>
+  <br>
   <div class="well well-sm">
     <label class="control-label">NgModel:</label>
     <textarea class="form-control" rows="10" readonly [value]="content"></textarea>

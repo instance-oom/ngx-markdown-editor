@@ -52,6 +52,9 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public set options(value: MdEditorOption) {
     this._options = Object.assign(this._defaultOption, {}, value);
     this.hideIcons = {};
+    if (this._options.showPreviewPanel === true || this._options.showPreviewPanel === false) {
+      this.showPreviewPanel = this._options.showPreviewPanel;
+    }
     if (this._options.hideIcons) {
       this._options.hideIcons.forEach((v: any) => this.hideIcons[v] = true);
     }
@@ -90,6 +93,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private _renderMarkTimeout: any;
   private _markedOpt: any;
   private _defaultOption: MdEditorOption = {
+    showPreviewPanel: true,
     showBorder: true,
     hideIcons: [],
     usingFontAwesome5: false,

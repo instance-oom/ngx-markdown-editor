@@ -94,6 +94,7 @@ export class AppModule { }
 - options: other settings for editor
   ```ts
   {  
+    showPreviewPanel?: boolean    // Show preview panel, Default is true
     showBorder?: boolean          // Show editor component's border. Default is true
     hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
     usingFontAwesome5?: boolean   // Using font awesome with version 5, Default is false
