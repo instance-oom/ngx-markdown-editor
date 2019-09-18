@@ -112,9 +112,15 @@ export class AppModule { }
   ```
 - upload(`Function`): For [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24), upload file by yourself
   ```ts
-  doUpload(files: Array<File>): Promise<Array<UploadResult>> {
-    // do upload file
+  constructor() {
+    this. doUpload = this. doUpload. bind(this);  // This is very important.
   }
+  
+  doUpload(files: Array<File>): Promise<Array<UploadResult>> {
+    // do upload file by yourself
+    return Pormise.resolve([{ name: 'xxx', url: 'xxx.png', isImg: true }]);
+  }
+  
   interface UploadResult {
     isImg: boolean
     name: string
