@@ -113,7 +113,7 @@ export class AppModule { }
 - upload(`Function`): For [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24), upload file by yourself
   ```ts
   constructor() {
-    this. doUpload = this. doUpload. bind(this);  // This is very important.
+    this.doUpload = this.doUpload.bind(this);  // This is very important.
   }
   
   doUpload(files: Array<File>): Promise<Array<UploadResult>> {
