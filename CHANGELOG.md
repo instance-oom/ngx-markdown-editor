@@ -1,3 +1,7 @@
+## 2.1.3
+
+- Fix [#44](https://github.com/lon-yang/ngx-markdown-editor/issues/44)
+
 ## 2.1.2
 
 - Add `showPreviewPanel` Option. (Default: `true`)

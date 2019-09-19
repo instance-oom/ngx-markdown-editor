@@ -163,12 +163,15 @@
       }
     }
 
-    .preview-panel {
-      height: 100%;
-      border-left: 1px solid rgba(0, 0, 0, 0.1);
-      background-color: white;
-      padding: 10px;
-      overflow-y: auto;
+    .preview-container {
+      overflow: auto;
+
+      .preview-panel {
+        height: 100%;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        background-color: white;
+        padding: 10px;
+      }
     }
 
     .md-footer {

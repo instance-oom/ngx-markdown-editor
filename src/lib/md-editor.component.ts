@@ -118,15 +118,24 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngOnInit() {
     let markedRender = new marked.Renderer();
-    markedRender.code = (code: any, language: any) => {
+    markedRender.image = function (href: string, title: string, text: string) {
+      let out = `<img style="max-width: 100%;" src="${href}" alt="${text}"`;
+      if (title) {
+        out += ` title="${title}"`;
+      }
+      out += (<any>this.options).xhtml ? "/>" : ">";
+      console.log(out);
+      return out;
+    };
+    markedRender.code = function (code: any, language: any) {
       let validLang = !!(language && hljs.getLanguage(language));
       let highlighted = validLang ? hljs.highlight(language, code).value : code;
       return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
     };
-    markedRender.table = (header: string, body: string) => {
+    markedRender.table = function (header: string, body: string) {
       return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
     };
-    markedRender.listitem = (text: any, task: boolean, checked: boolean) => {
+    markedRender.listitem = function (text: any, task: boolean, checked: boolean) {
       if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
         if (text.startsWith('<input')) {
           text = text
