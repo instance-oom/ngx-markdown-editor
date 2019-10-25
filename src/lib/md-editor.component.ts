@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef, Renderer, Attribute, Input, ElementRef } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdEditorOption } from './md-editor.types';
@@ -111,7 +111,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   constructor(
     @Attribute('required') public required: boolean = false,
     @Attribute('maxlength') public maxlength: number = -1,
-    private _renderer: Renderer,
+    private _renderer2: Renderer2,
     private _domSanitizer: DomSanitizer) {
 
   }
@@ -124,7 +124,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         out += ` title="${title}"`;
       }
       out += (<any>this.options).xhtml ? "/>" : ">";
-      console.log(out);
       return out;
     };
     markedRender.code = function (code: any, language: any) {
@@ -277,7 +276,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   fullScreen() {
     this.isFullScreen = !this.isFullScreen;
-    this._renderer.setElementStyle(document.body, 'overflowY', this.isFullScreen ? 'hidden' : 'auto');
+    this._renderer2.setStyle(document.body, 'overflowY', this.isFullScreen ? 'hidden' : 'auto');
     this.editorResize();
   }
 
