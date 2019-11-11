@@ -1,14 +1,19 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.ngc.json",
-    "postbuild": "xcopy src\\assets dist\\assets /S/E/I",
+    "postbuild": "npm run build:schematics && npm run copy",
+    "build:schematics": "tsc -p tsconfig.schematics.json",
     "ng": "ng",
     "start": "ng serve",
-    "build:demo": "ng build"
+    "build:demo": "ng build",
+    "copy": "npm run copy:assets && npm run copy:schemas && npm run copy:collection",
+    "copy:assets": "xcopy src\\assets dist\\assets /S/E/I",
+    "copy:schemas": "xcopy schematics\\ng-add\\schema.json dist\\schematics\\ng-add\\schema.json*",
+    "copy:collection": "xcopy schematics\\collection.json dist\\schematics\\collection.json*"
   },
   "repository": {
     "type": "git",
@@ -24,6 +29,7 @@
   ],
   "author": "Lon.L.Yang",
   "license": "Apache License 2.0",
+  "schematics": "./schematics/collection.json",
   "bugs": {
     "url": "https://github.com/lon-yang/ngx-markdown-editor/issues"
   },
@@ -39,6 +45,8 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
+    "@angular-devkit/core": "^8.3.18",
+    "@angular-devkit/schematics": "^8.3.18",
     "@angular/cli": "^8.3.14",
     "@angular/common": "^8.2.12",
     "@angular/compiler": "^8.2.12",

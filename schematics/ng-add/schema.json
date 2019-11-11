@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "SchematicsKendoAngularInputs",
+  "title": "NGX-Markdown-Editor Options Schema",
+  "type": "object",
+  "properties": {
+    "skipDeps": {
+      "description": "Skip installing ngx-markdown-ediotr dependency packages.",
+      "type": "boolean",
+      "default": false
+    },
+    "skipImport": {
+      "description": "Skip styles/scripts registration.",
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": []
+}
