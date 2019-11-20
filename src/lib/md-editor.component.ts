@@ -37,6 +37,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public get mode(): string {
     return this._mode || 'editor';
   }
+
+  //Customized image renderer, to override the default out
+  @Input() public imageRenderer: Function;
+
   public set mode(value: string) {
     if (!value || (value.toLowerCase() !== 'editor' && value.toLowerCase() !== 'preview')) {
       value = 'editor';
@@ -118,14 +122,17 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngOnInit() {
     let markedRender = new marked.Renderer();
-    markedRender.image = function (href: string, title: string, text: string) {
-      let out = `<img style="max-width: 100%;" src="${href}" alt="${text}"`;
-      if (title) {
-        out += ` title="${title}"`;
-      }
-      out += (<any>this.options).xhtml ? "/>" : ">";
-      return out;
-    };
+    if (this.imageRenderer)
+      markedRender.image = this.imageRenderer;
+    else
+      markedRender.image = function (href: string, title: string, text: string) {
+        let out = `<img style="max-width: 100%;" src="${href}" alt="${text}"`;
+        if (title) {
+          out += ` title="${title}"`;
+        }
+        out += (<any>this.options).xhtml ? "/>" : ">";
+        return out;
+      };
     markedRender.code = function (code: any, language: any) {
       let validLang = !!(language && hljs.getLanguage(language));
       let highlighted = validLang ? hljs.highlight(language, code).value : code;
