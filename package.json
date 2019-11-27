@@ -1,6 +1,6 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {

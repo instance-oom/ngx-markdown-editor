@@ -38,9 +38,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     return this._mode || 'editor';
   }
 
-  //Customized image renderer, to override the default out
-  @Input() public imageRenderer: Function;
-
   public set mode(value: string) {
     if (!value || (value.toLowerCase() !== 'editor' && value.toLowerCase() !== 'preview')) {
       value = 'editor';
@@ -122,41 +119,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngOnInit() {
     let markedRender = new marked.Renderer();
-    if (this.imageRenderer)
-      markedRender.image = this.imageRenderer;
-    else
-      markedRender.image = function (href: string, title: string, text: string) {
-        let out = `<img style="max-width: 100%;" src="${href}" alt="${text}"`;
-        if (title) {
-          out += ` title="${title}"`;
-        }
-        out += (<any>this.options).xhtml ? "/>" : ">";
-        return out;
-      };
-    markedRender.code = function (code: any, language: any) {
-      let validLang = !!(language && hljs.getLanguage(language));
-      let highlighted = validLang ? hljs.highlight(language, code).value : code;
-      return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
-    };
-    markedRender.table = function (header: string, body: string) {
-      return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
-    };
-    markedRender.listitem = function (text: any, task: boolean, checked: boolean) {
-      if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
-        if (text.startsWith('<input')) {
-          text = text
-            .replace('<input disabled="" type="checkbox">', '<i class="fa fa-square-o"></i>')
-            .replace('<input checked="" disabled="" type="checkbox">', '<i class="fa fa-check-square"></i>');
-        } else {
-          text = text
-            .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o"></i> ')
-            .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square"></i> ');
-        }
-        return `<li>${text}</li>`;
-      } else {
-        return `<li>${text}</li>`;
-      }
-    };
+    markedRender.image = this.getRender('image');
+    markedRender.code = this.getRender('code');
+    markedRender.table = this.getRender('table');
+    markedRender.listitem = this.getRender('listitem');
     let markedjsOpt = {
       renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
@@ -351,5 +317,52 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     evt.preventDefault();
     if (!this._hasUploadFunction) return;
     this.dragover = false;
+  }
+
+  private getRender(renderType: 'image' | 'table' | 'code' | 'listitem') {
+    let customRender = this.options && this.options.customRender && this.options.customRender[renderType];
+    if (customRender && typeof customRender === 'function') {
+      return customRender;
+    } else {
+      switch (renderType) {
+        case 'image':
+          return function (href: string, title: string, text: string) {
+            let out = `<img style="max-width: 100%;" src="${href}" alt="${text}"`;
+            if (title) {
+              out += ` title="${title}"`;
+            }
+            out += (<any>this.options).xhtml ? "/>" : ">";
+            return out;
+          };
+        case 'code':
+          return function (code: any, language: any) {
+            let validLang = !!(language && hljs.getLanguage(language));
+            let highlighted = validLang ? hljs.highlight(language, code).value : code;
+            return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
+          };
+        case 'table':
+          return function (header: string, body: string) {
+            return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
+          };
+        case 'listitem':
+          return function (text: any, task: boolean, checked: boolean) {
+            if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
+              if (text.startsWith('<input')) {
+                text = text
+                  .replace('<input disabled="" type="checkbox">', '<i class="fa fa-square-o"></i>')
+                  .replace('<input checked="" disabled="" type="checkbox">', '<i class="fa fa-check-square"></i>');
+              } else {
+                text = text
+                  .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o"></i> ')
+                  .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square"></i> ');
+              }
+              return `<li>${text}</li>`;
+            } else {
+              return `<li>${text}</li>`;
+            }
+          };
+      }
+    }
+    return null;
   }
 }

@@ -1,3 +1,7 @@
+## 2.4.0
+
+- Support custom render image/table/code/listitem
+
 ## 2.3.0
 
 - Support `ng add`

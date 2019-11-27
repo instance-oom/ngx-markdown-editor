@@ -104,6 +104,12 @@ export class AppModule { }
     enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc. Default is false
     resizable?: boolean           // Allow resize the editor
     markedjsOpt?: MarkedjsOption  // The markedjs option, see https://marked.js.org/#/USING_ADVANCED.md#options
+    customRender?: {              // Custom markedjs render
+      image?: Function     // Image Render
+      table?: Function     // Table Render
+      code?: Function      // Code Render
+      listitem?: Function  // Listitem Render
+    }
   }
   ```
 - preRender(`Function`): For [#13](https://github.com/lon-yang/ngx-markdown-editor/issues/13), this will not effect `ngModel`'s value, just rendered value

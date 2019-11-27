@@ -7,6 +7,7 @@ export interface MdEditorOption {
   enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc.
   resizable?: boolean           // Allow resize the editor
   markedjsOpt?: MarkedjsOption  // The markedjs option, see https://marked.js.org/#/USING_ADVANCED.md#options
+  customRender?: CustomRender   // Custom markedjs render
 }
 
 export interface UploadResult {
@@ -31,4 +32,11 @@ export interface MarkedjsOption {
   smartypants?: boolean        // Default false
   tables?: boolean             // Default true
   xhtml?: boolean              // Default false
+}
+
+export interface CustomRender {
+  image?: Function     // Image Render
+  table?: Function     // Table Render
+  code?: Function      // Code Render
+  listitem?: Function  // Listitem Render
 }
