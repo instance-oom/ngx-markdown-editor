@@ -138,3 +138,7 @@ export class AppModule { }
 
 - required: for form validate
 - maxlength: for form validate
+
+# Event
+- `onEditorLoaded: EventEmitter<AceEditor>`   
+Fires when the ace editor loaded.

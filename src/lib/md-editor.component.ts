@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, ElementRef } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdEditorOption } from './md-editor.types';
@@ -61,6 +61,9 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     }
   }
   private _options: any = {};
+
+  @Output()
+  public onEditorLoaded: EventEmitter<any> = new EventEmitter<any>();
 
   public hideIcons: any = {};
   public showPreviewPanel: boolean = true;
@@ -143,6 +146,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       let val = this._editor.getValue();
       this.markdownValue = val;
     });
+
+    this.onEditorLoaded.next(this._editor);
   }
 
   ngOnDestroy() {

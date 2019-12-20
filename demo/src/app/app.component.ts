@@ -85,4 +85,13 @@ export class AppComponent {
       }, 3000);
     });
   }
+
+  onEditorLoaded(editor) {
+    console.log(`ACE Editor Ins: `, editor);
+    // editor.setOption('showLineNumbers', false);
+
+    // setTimeout(() => {
+    //   editor.setOption('showLineNumbers', true);
+    // }, 2000);
+  }
 }
