@@ -67,7 +67,7 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    FormsModule, // make sure FormsModule is imported to make ngModel work
     LMarkdownEditorModule
   ],
   providers: [],

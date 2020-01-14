@@ -1,4 +1,5 @@
 .vscode/
+.history/
 node_modules/
 .ng_pkg_build
 dist/
