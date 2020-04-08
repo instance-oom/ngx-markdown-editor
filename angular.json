@@ -43,7 +43,12 @@
             "tsConfig": "demo/src/tsconfig.app.json",
             "assets": [
               "demo/src/favicon.ico",
-              "demo/src/assets"
+              "demo/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ace-builds/src-min",
+                "output": "./assets/ace-builds/"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",

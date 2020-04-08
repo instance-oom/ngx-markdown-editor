@@ -12,8 +12,65 @@ Angular markdown editor based on ace editor
 
 ### Installation
 
-> Tips: This is a new way to add dependencies since `2.1.0`, and the old way is work fine too.
+<details open>
+<summary>>=3.0.0</summary>
+<p></p>
+Install dependencies from npm repository:
+```bash
+npm i ace-builds bootstrap font-awesome
+```
 
+Install `ngx-markdown-editor` from npm repository:
+```bash
+npm i ngx-markdown-editor
+```
+
+Add the assets、styles and scripts in `angular.json`:
+```json
+{
+  ...
+  "architect": {
+    "build": {
+      "options": {
+        ...
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "node_modules/ace-builds/src-min",
+            "output": "./assets/ace-builds/"
+          }
+        ],
+        "styles": [
+          "node_modules/bootstrap/dist/css/bootstrap.min.css",
+          "node_modules/font-awesome/css/font-awesome.min.css",
+          "node_modules/ngx-markdown-editor/assets/highlight.js/agate.min.css"
+        ],
+        "scripts": [
+          "node_modules/ngx-markdown-editor/assets/highlight.js/highlight.min.js",
+          "node_modules/ngx-markdown-editor/assets/marked.min.js"
+        ]
+        ...
+      }
+    }
+  }
+  ...    
+}
+```
+
+Add `ace.js` in `index.html`
+```html
+<html>
+  <head>
+    <script src="/assets/ace-builds/ace.js"></script>
+  </head>
+  <body></body>
+</html>
+```
+</details>
+
+<details>
+<summary><=2.5.0</summary>
+<p></p>
 Install dependencies from npm repository:
 ```bash
 npm i brace bootstrap font-awesome
@@ -55,6 +112,7 @@ Import `brace` in `polyfills.ts`
 import 'brace';
 import 'brace/mode/markdown';
 ```
+</details>
 
 ### Sample
 

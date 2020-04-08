@@ -1,3 +1,12 @@
+## 3.0.0
+
+- Replace `brace` with official `ace` library
+- Support `Angular 9`
+
+## 2.5.0
+
+- Add `onEditorLoaded` Event
+
 ## 2.4.0
 
 - Support custom render image/table/code/listitem

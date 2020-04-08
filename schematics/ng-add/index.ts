@@ -5,12 +5,12 @@ import { getWorkspace, getProjectFromWorkspace, readFile } from './../util';
 function registerInPackageJson(_options: any) {
   return (tree: Tree, _context: SchematicContext) => {
     if (_options.skipDeps) {
-      _context.logger.info('Skip installing ngx-markdown-ediotr dependency(brace/bootstrap/font-awesome) packages.');
+      _context.logger.info('Skip installing ngx-markdown-ediotr dependency(ace-builds/bootstrap/font-awesome) packages.');
       return tree;
     }
     if (tree.exists('package.json')) {
       const dependencies: any = {
-        'brace': '^0.11.1',
+        'ace-builds': '^1.4.9',
         'bootstrap': '^4.3.1',
         'font-awesome': '^4.7.0'
       }
@@ -34,13 +34,18 @@ function registerInPackageJson(_options: any) {
 function updateAngularJson(_options: any) {
   return (tree: Tree, _context: SchematicContext) => {
     if (_options.skipImport) {
-      _context.logger.info('Skip styles/scripts registration.');
+      _context.logger.info('Skip assets/styles/scripts registration.');
       return tree;
     }
     const supportedTargets = new Set(['build', 'test']);
     const workspace = getWorkspace(tree);
     const project = getProjectFromWorkspace(workspace, _options.project);
     const targets = project.architect || project.targets;
+    let aceAssets = {
+      glob: "**/*",
+      input: "node_modules/ace-builds/src-min",
+      output: "./assets/ace-builds/"
+    };
     let styles = [
       'node_modules/bootstrap/dist/css/bootstrap.min.css',
       'node_modules/font-awesome/css/font-awesome.min.css',
@@ -53,13 +58,31 @@ function updateAngularJson(_options: any) {
     Object.keys(targets).filter(key => supportedTargets.has(key)).forEach(key => {
       let target = targets[key];
       if (!target.options) {
-        target.options = { styles: styles, scripts: scripts };
-      } else if (!target.options.styles || !target.options.scripts) {
+        target.options = {
+          assets: [aceAssets],
+          styles: styles,
+          scripts: scripts
+        };
+      } else if (!target.options.assets || !target.options.styles || !target.options.scripts) {
+        target.options.assets = target.options.assets || [aceAssets];
         target.options.styles = target.options.styles || styles;
         target.options.scripts = target.options.scripts || scripts;
       } else {
         styles = styles.reverse();
         scripts = scripts.reverse();
+
+        let foundAceAsset = false;
+        for (let asset of target.options.assets) {
+          if (typeof asset !== 'object' || !asset.input) continue;
+          if (asset.input.indexOf('node_modules/ace-builds') !== -1) {
+            foundAceAsset = true;
+            break;
+          }
+        }
+        if (!foundAceAsset) {
+          target.options.assets.push(aceAssets);
+        }
+
         const existingStyles = target.options.styles.map((s: any) => typeof s === 'string' ? s : s.input);
         for (let style of styles) {
           const exists = existingStyles.find((s: any) => s.includes(style));
@@ -82,32 +105,11 @@ function updateAngularJson(_options: any) {
   }
 };
 
-function updatePolyfills(_options: any) {
-  return (tree: Tree, _context: SchematicContext) => {
-    if (_options.skipImport) {
-      return tree;
-    }
-    let polyfills = tree.read('src/polyfills.ts');
-    if (polyfills) {
-      let content = polyfills.toString();
-      if (content.indexOf(`import 'brace';`) === -1) {
-        content += `\r\nimport 'brace';`;
-      }
-      if (content.indexOf(`import 'brace/mode/markdown';`) === -1) {
-        content += `\r\nimport 'brace/mode/markdown';`;
-      }
-      tree.overwrite('src/polyfills.ts', content);
-    }
-    return tree;
-  }
-}
-
 export function ngAdd(_options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     return chain([
       registerInPackageJson(_options),
-      updateAngularJson(_options),
-      updatePolyfills(_options)
+      updateAngularJson(_options)
     ])(tree, _context);
   };
 }
