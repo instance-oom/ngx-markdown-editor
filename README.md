@@ -16,11 +16,13 @@ Angular markdown editor based on ace editor
 <summary>>=3.0.0</summary>
 <p></p>
 Install dependencies from npm repository:
+  
 ```bash
 npm i ace-builds bootstrap font-awesome
 ```
 
 Install `ngx-markdown-editor` from npm repository:
+
 ```bash
 npm i ngx-markdown-editor
 ```
@@ -72,6 +74,7 @@ Add `ace.js` in `index.html`
 <summary><=2.5.0</summary>
 <p></p>
 Install dependencies from npm repository:
+
 ```bash
 npm i brace bootstrap font-awesome
 ```
