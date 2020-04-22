@@ -26,6 +26,11 @@ export class AppComponent {
   public content: string;
   public mode: string = 'editor';
 
+  constructor() {
+    this.preRender = this.preRender.bind(this);
+    this.postRender = this.postRender.bind(this);
+  }
+
   ngOnInit() {
     let contentArr = ['# Hello, Markdown Editor!'];
     contentArr.push('```javascript ');
@@ -93,5 +98,26 @@ export class AppComponent {
     // setTimeout(() => {
     //   editor.setOption('showLineNumbers', true);
     // }, 2000);
+  }
+
+  preRender(mdContent) {
+    console.log(`preRender fired`);
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(mdContent);
+    //   }, 4000);
+    // })
+    return mdContent;
+  }
+
+  postRender(html) {
+    console.log(`postRender fired`);
+    // return '<h1>Test</h1>';
+    return html;
+  }
+
+  onPreviewDomChanged(dom: HTMLElement) {
+    console.log(dom);
+    console.log(dom.innerHTML)
   }
 }

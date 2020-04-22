@@ -1,5 +1,5 @@
-<div class="md-editor-container" [class.font-awesome5]="options?.usingFontAwesome5" [class.fullscreen]="isFullScreen" [class.md-editor-resizable]="options?.resizable"
-  [style.height]="height">
+<div class="md-editor-container" [class.font-awesome5]="options?.usingFontAwesome5" [class.fullscreen]="isFullScreen"
+  [class.md-editor-resizable]="options?.resizable" [style.height]="height">
   <div class="md-layout">
     <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
       <div class="btn-group">
@@ -54,7 +54,8 @@
       <div class="btn-group pull-right hide-split">
         <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()"
           *ngIf="!hideIcons.FullScreen">
-          <i class="fa" [class.fa-arrows-alt]="!options?.usingFontAwesome5 || !isFullScreen" [class.fa-compress]="options?.usingFontAwesome5 && isFullScreen"></i>
+          <i class="fa" [class.fa-arrows-alt]="!options?.usingFontAwesome5 || !isFullScreen"
+            [class.fa-compress]="options?.usingFontAwesome5 && isFullScreen"></i>
         </button>
       </div>
     </div>
@@ -73,8 +74,9 @@
           <div class="ace-editor" #aceEditor></div>
         </div>
       </div>
-      <div class="preview-container"[style.display]="showPreviewPanel ? 'block' : 'none'" (click)="previewPanelClick($event)">
-        <div class="preview-panel" [innerHtml]="previewHtml"></div>
+      <div class="preview-container" [style.display]="showPreviewPanel ? 'block' : 'none'"
+        (click)="previewPanelClick($event)">
+        <div class="preview-panel" #previewContainer></div>
       </div>
     </div>
     <div class="md-footer" *ngIf="maxlength > 0 && mode != 'preview'">

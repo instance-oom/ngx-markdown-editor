@@ -1,4 +1,4 @@
-import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef, NgZone } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdEditorOption } from './md-editor.types';
@@ -6,6 +6,16 @@ import { MdEditorOption } from './md-editor.types';
 declare let ace: any;
 declare let marked: any;
 declare let hljs: any;
+
+const DEFAULT_EDITOR_OPTION: MdEditorOption = {
+  showPreviewPanel: true,
+  showBorder: true,
+  hideIcons: [],
+  usingFontAwesome5: false,
+  scrollPastEnd: 0,
+  enablePreviewContentClick: false,
+  resizable: false
+}
 
 @Component({
   selector: 'md-editor',
@@ -27,84 +37,71 @@ declare let hljs: any;
 
 export class MarkdownEditorComponent implements ControlValueAccessor, Validator {
 
-  @ViewChild('aceEditor', { static: false }) public aceEditorContainer: ElementRef;
+  @ViewChild('aceEditor', { static: true }) public aceEditorContainer: ElementRef;
+  @ViewChild('previewContainer', { static: true }) public previewContainer: ElementRef;
   @Input() public hideToolbar: boolean = false;
   @Input() public height: string = "300px";
   @Input() public preRender: Function;
+  @Input() public postRender: Function;
   @Input() public upload: Function;
 
   @Input()
   public get mode(): string {
-    return this._mode || 'editor';
+    return this._mode;
   }
-
   public set mode(value: string) {
-    if (!value || (value.toLowerCase() !== 'editor' && value.toLowerCase() !== 'preview')) {
-      value = 'editor';
-    }
-    this._mode = value;
+    this._mode = (!value || ['editor', 'preview'].indexOf(value.toLowerCase()) === -1)
+      ? 'editor'
+      : value;
   }
-  private _mode: string;
+  private _mode: string = 'editor';
 
   @Input()
   public get options(): MdEditorOption {
     return this._options || {};
   }
   public set options(value: MdEditorOption) {
-    this._options = Object.assign(this._defaultOption, {}, value);
-    this.hideIcons = {};
-    if (this._options.showPreviewPanel === true || this._options.showPreviewPanel === false) {
-      this.showPreviewPanel = this._options.showPreviewPanel;
+    let _options = Object.assign(DEFAULT_EDITOR_OPTION, {}, value);
+    let _hideIcons = {};
+    if (typeof _options.showPreviewPanel === 'boolean') {
+      this.showPreviewPanel = _options.showPreviewPanel;
     }
-    if (this._options.hideIcons) {
-      this._options.hideIcons.forEach((v: any) => this.hideIcons[v] = true);
+    if (Array.isArray(_options.hideIcons)) {
+      _options.hideIcons.forEach((v: any) => _hideIcons[v] = true);
     }
+    this._options = _options;
+    this.hideIcons = _hideIcons;
   }
   private _options: any = {};
 
-  @Output()
-  public onEditorLoaded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public onEditorLoaded: EventEmitter<any> = new EventEmitter<any>();
+  @Output() public onPreviewDomChanged: EventEmitter<HTMLElement> = new EventEmitter<HTMLElement>();
 
   public hideIcons: any = {};
   public showPreviewPanel: boolean = true;
   public isFullScreen: boolean = false;
-  public previewHtml: any;
   public dragover: boolean = false;
   public isUploading: boolean = false;
 
+  //#region Markdown value and html value define
   public get markdownValue(): any {
     return this._markdownValue || '';
   }
   public set markdownValue(value: any) {
     this._markdownValue = value;
     this._onChange(value);
-
-    if (this.preRender && this.preRender instanceof Function) {
-      value = this.preRender(value);
-    }
-    if (value !== null && value !== undefined) {
-      if (this._renderMarkTimeout) clearTimeout(this._renderMarkTimeout);
-      this._renderMarkTimeout = setTimeout(() => {
-        let html = marked(value || '', this._markedOpt);
-        this.previewHtml = this._domSanitizer.bypassSecurityTrustHtml(html);
-      }, 100);
-    }
+    this._updateDom();
   }
   private _markdownValue: any;
 
-  private _editor: any;
-  private _editorResizeTimer: any;
-  private _renderMarkTimeout: any;
-  private _markedOpt: any;
-  private _defaultOption: MdEditorOption = {
-    showPreviewPanel: true,
-    showBorder: true,
-    hideIcons: [],
-    usingFontAwesome5: false,
-    scrollPastEnd: 0,
-    enablePreviewContentClick: false,
-    resizable: false
-  };
+  public previewHtml: any;
+  //#endregion
+
+
+  private _aceEditorIns: any;
+  private _aceEditorResizeTimer: any;
+  private _convertMarkdownToHtmlTimer: any;
+  private _markedJsOpt: any;
   private get _hasUploadFunction(): boolean {
     return this.upload && this.upload instanceof Function;
   }
@@ -115,6 +112,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   constructor(
     @Attribute('required') public required: boolean = false,
     @Attribute('maxlength') public maxlength: number = -1,
+    private _ngZone: NgZone,
     private _renderer2: Renderer2,
     private _domSanitizer: DomSanitizer) {
 
@@ -122,43 +120,43 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngOnInit() {
     let markedRender = new marked.Renderer();
-    markedRender.image = this.getRender('image');
-    markedRender.code = this.getRender('code');
-    markedRender.table = this.getRender('table');
-    markedRender.listitem = this.getRender('listitem');
+    markedRender.image = this._getRender('image');
+    markedRender.code = this._getRender('code');
+    markedRender.table = this._getRender('table');
+    markedRender.listitem = this._getRender('listitem');
     let markedjsOpt = {
       renderer: markedRender,
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
-    this._markedOpt = Object.assign({}, markedjsOpt, this.options.markedjsOpt);
+    this._markedJsOpt = Object.assign({}, markedjsOpt, this.options.markedjsOpt);
   }
 
   ngAfterViewInit() {
     let editorElement = this.aceEditorContainer.nativeElement;
-    this._editor = ace.edit(editorElement);
-    this._editor.$blockScrolling = Infinity;
-    this._editor.getSession().setUseWrapMode(true);
-    this._editor.getSession().setMode("ace/mode/markdown");
-    this._editor.setValue(this.markdownValue || '', 1);
-    this._editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
+    this._aceEditorIns = ace.edit(editorElement);
+    this._aceEditorIns.$blockScrolling = Infinity;
+    this._aceEditorIns.getSession().setUseWrapMode(true);
+    this._aceEditorIns.getSession().setMode("ace/mode/markdown");
+    this._aceEditorIns.setValue(this.markdownValue || '', 1);
+    this._aceEditorIns.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
 
-    this._editor.on("change", (e: any) => {
-      let val = this._editor.getValue();
+    this._aceEditorIns.on("change", (e: any) => {
+      let val = this._aceEditorIns.getValue();
       this.markdownValue = val;
     });
 
-    this.onEditorLoaded.next(this._editor);
+    this.onEditorLoaded.next(this._aceEditorIns);
   }
 
   ngOnDestroy() {
-    this._editor && this._editor.destroy();
+    this._aceEditorIns && this._aceEditorIns.destroy();
   }
 
   writeValue(value: any | Array<any>): void {
     setTimeout(() => {
       this.markdownValue = value;
-      if (typeof value !== 'undefined' && this._editor) {
-        this._editor.setValue(value || '', 1);
+      if (typeof value !== 'undefined' && this._aceEditorIns) {
+        this._aceEditorIns.setValue(value || '', 1);
       }
     }, 1);
   }
@@ -183,12 +181,12 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   insertContent(type: string, customContent?: string) {
-    if (!this._editor) return;
-    let selectedText = this._editor.getSelectedText();
+    if (!this._aceEditorIns) return;
+    let selectedText = this._aceEditorIns.getSelectedText();
     let isSelected = !!selectedText;
     let startSize = 2;
     let initText: string = '';
-    let range = this._editor.selection.getRange();
+    let range = this._aceEditorIns.selection.getRange();
     switch (type) {
       case 'Bold':
         initText = 'Bold Text';
@@ -231,13 +229,13 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         startSize = 0;
         break;
     }
-    this._editor.session.replace(range, selectedText);
+    this._aceEditorIns.session.replace(range, selectedText);
     if (!isSelected) {
       range.start.column += startSize;
       range.end.column = range.start.column + initText.length;
-      this._editor.selection.setRange(range);
+      this._aceEditorIns.selection.setRange(range);
     }
-    this._editor.focus();
+    this._aceEditorIns.focus();
   }
 
   togglePreview() {
@@ -263,11 +261,11 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   editorResize(timeOut: number = 100) {
-    if (!this._editor) return
-    if (this._editorResizeTimer) clearTimeout(this._editorResizeTimer);
-    this._editorResizeTimer = setTimeout(() => {
-      this._editor.resize();
-      this._editor.focus();
+    if (!this._aceEditorIns) return
+    if (this._aceEditorResizeTimer) clearTimeout(this._aceEditorResizeTimer);
+    this._aceEditorResizeTimer = setTimeout(() => {
+      this._aceEditorIns.resize();
+      this._aceEditorIns.focus();
     }, timeOut);
   }
 
@@ -324,7 +322,33 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.dragover = false;
   }
 
-  private getRender(renderType: 'image' | 'table' | 'code' | 'listitem') {
+  private _updateDom() {
+    if (this._convertMarkdownToHtmlTimer) clearTimeout(this._convertMarkdownToHtmlTimer);
+    this._convertMarkdownToHtmlTimer = setTimeout(() => {
+      Promise.resolve(this.markdownValue)
+        .then((mdContent) => {
+          return (this.preRender && this.preRender instanceof Function) ? this.preRender(mdContent) : mdContent;
+        })
+        .then(mdContent => {
+          let html = marked(mdContent || '', this._markedJsOpt);
+          return (this.postRender && this.postRender instanceof Function) ? this.postRender(html) : html;
+        })
+        .then(parsedHtml => {
+          this.previewHtml = this._domSanitizer.bypassSecurityTrustHtml(parsedHtml);
+          if (this.previewContainer && this.previewContainer.nativeElement) {
+            this._ngZone.runOutsideAngular(() => {
+              this._renderer2.setProperty(this.previewContainer.nativeElement, 'innerHTML', parsedHtml);
+              setTimeout(() => { this.onPreviewDomChanged.next(this.previewContainer.nativeElement); }, 100);
+            });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    }, 100);
+  }
+
+  private _getRender(renderType: 'image' | 'table' | 'code' | 'listitem') {
     let customRender = this.options && this.options.customRender && this.options.customRender[renderType];
     if (customRender && typeof customRender === 'function') {
       return customRender;
@@ -368,6 +392,5 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
           };
       }
     }
-    return null;
   }
 }

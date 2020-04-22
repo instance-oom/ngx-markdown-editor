@@ -1,3 +1,8 @@
+
+## 3.1.0
+
+- Support [`postRender`](https://github.com/lon-yang/ngx-markdown-editor/issues/61), Add `onPreviewDomChanged: EventEmitter<HTMLElement>` EventEmitter 
+
 ## 3.0.0
 
 - Replace `brace` with official `ace` library
