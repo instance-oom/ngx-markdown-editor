@@ -74,7 +74,7 @@
           <div class="ace-editor" #aceEditor></div>
         </div>
       </div>
-      <div class="preview-container" [style.display]="showPreviewPanel ? 'block' : 'none'"
+      <div class="preview-container" [style.display]="(mode == 'preview' || showPreviewPanel) ? 'block' : 'none'"
         (click)="previewPanelClick($event)">
         <div class="preview-panel" #previewContainer></div>
       </div>

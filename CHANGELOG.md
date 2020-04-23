@@ -1,3 +1,6 @@
+## 3.1.2
+
+- Fix [Issue #62](https://github.com/lon-yang/ngx-markdown-editor/issues/62)
 
 ## 3.1.0
 

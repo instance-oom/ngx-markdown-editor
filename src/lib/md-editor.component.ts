@@ -53,6 +53,11 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this._mode = (!value || ['editor', 'preview'].indexOf(value.toLowerCase()) === -1)
       ? 'editor'
       : value;
+    setTimeout(() => {
+      if (this._aceEditorIns && typeof this._aceEditorIns.resize === 'function') {
+        this._aceEditorIns.resize();
+      }
+    }, 100);
   }
   private _mode: string = 'editor';
 
