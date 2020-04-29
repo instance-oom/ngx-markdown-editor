@@ -1,5 +1,6 @@
 <div style="margin: 20px">
   <form novalidate #form="ngForm">
+    <input type="text" class="form-control" name="Test" [(ngModel)]="content">
     <md-editor #md="ngModel" name="Content" (onEditorLoaded)="onEditorLoaded($event)"
     [preRender]="preRender" [postRender]="postRender"
     (onPreviewDomChanged)="onPreviewDomChanged($event)"

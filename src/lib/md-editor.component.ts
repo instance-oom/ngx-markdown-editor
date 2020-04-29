@@ -92,17 +92,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public get markdownValue(): string {
     return this._markdownValue || '';
   }
-  public set markdownValue(value: string) {
-    const normalizedValue = typeof value === 'string' ? value : (value || '').toString();
-    if (this._markdownValue === normalizedValue) return;
-    this._markdownValue = normalizedValue;
-    this._updateDom();
-    if (this._aceEditorIns) {
-      this._isValueSettedByprogrammatically = true;
-      this._aceEditorIns.setValue(normalizedValue, 1);
-      this._isValueSettedByprogrammatically = false;
-    }
-  }
   private _markdownValue: string;
 
   public previewHtml: any;
@@ -155,7 +144,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     editor.on('change', (e: any) => {
       if (this._isValueSettedByprogrammatically) return;
       let val = editor.getValue();
-      this.markdownValue = val;
+      this._updateMarkdownValue(val, true);
       this._onChange(this.markdownValue);
     });
     editor.on('blur', () => { this._onTouched() });
@@ -169,7 +158,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   writeValue(value: string): void {
-    this.markdownValue = value;
+    this._updateMarkdownValue(value, false);
   }
 
   registerOnChange(fn: (_: any) => {}): void {
@@ -331,6 +320,18 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     evt.preventDefault();
     if (!this._hasUploadFunction) return;
     this.dragover = false;
+  }
+
+  private _updateMarkdownValue(value: any, changedByUser: boolean = false) {
+    const normalizedValue = typeof value === 'string' ? value : (value || '').toString();
+    if (this._markdownValue === normalizedValue) return;
+    this._markdownValue = normalizedValue;
+    this._updateDom();
+    if (this._aceEditorIns && !changedByUser) {
+      this._isValueSettedByprogrammatically = true;
+      this._aceEditorIns.setValue(normalizedValue, 1);
+      this._isValueSettedByprogrammatically = false;
+    }
   }
 
   private _updateDom() {
