@@ -89,15 +89,21 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public isUploading: boolean = false;
 
   //#region Markdown value and html value define
-  public get markdownValue(): any {
+  public get markdownValue(): string {
     return this._markdownValue || '';
   }
-  public set markdownValue(value: any) {
-    this._markdownValue = value;
-    this._onChange(value);
+  public set markdownValue(value: string) {
+    const normalizedValue = typeof value === 'string' ? value : (value || '').toString();
+    if (this._markdownValue === normalizedValue) return;
+    this._markdownValue = normalizedValue;
     this._updateDom();
+    if (this._aceEditorIns) {
+      this._isValueSettedByprogrammatically = true;
+      this._aceEditorIns.setValue(normalizedValue, 1);
+      this._isValueSettedByprogrammatically = false;
+    }
   }
-  private _markdownValue: any;
+  private _markdownValue: string;
 
   public previewHtml: any;
   //#endregion
@@ -107,6 +113,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private _aceEditorResizeTimer: any;
   private _convertMarkdownToHtmlTimer: any;
   private _markedJsOpt: any;
+  private _isValueSettedByprogrammatically: boolean;
   private get _hasUploadFunction(): boolean {
     return this.upload && this.upload instanceof Function;
   }
@@ -138,32 +145,31 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngAfterViewInit() {
     let editorElement = this.aceEditorContainer.nativeElement;
-    this._aceEditorIns = ace.edit(editorElement);
-    this._aceEditorIns.$blockScrolling = Infinity;
-    this._aceEditorIns.getSession().setUseWrapMode(true);
-    this._aceEditorIns.getSession().setMode("ace/mode/markdown");
-    this._aceEditorIns.setValue(this.markdownValue || '', 1);
-    this._aceEditorIns.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
+    let editor = ace.edit(editorElement);
+    editor.$blockScrolling = Infinity;
+    editor.getSession().setUseWrapMode(true);
+    editor.getSession().setMode("ace/mode/markdown");
+    editor.setValue(this.markdownValue, 1);
+    editor.setOption('scrollPastEnd', this._options.scrollPastEnd || 0);
 
-    this._aceEditorIns.on("change", (e: any) => {
-      let val = this._aceEditorIns.getValue();
+    editor.on('change', (e: any) => {
+      if (this._isValueSettedByprogrammatically) return;
+      let val = editor.getValue();
       this.markdownValue = val;
+      this._onChange(this.markdownValue);
     });
+    editor.on('blur', () => { this._onTouched() });
 
-    this.onEditorLoaded.next(this._aceEditorIns);
+    this.onEditorLoaded.next(editor);
+    this._aceEditorIns = editor;
   }
 
   ngOnDestroy() {
     this._aceEditorIns && this._aceEditorIns.destroy();
   }
 
-  writeValue(value: any | Array<any>): void {
-    setTimeout(() => {
-      this.markdownValue = value;
-      if (typeof value !== 'undefined' && this._aceEditorIns) {
-        this._aceEditorIns.setValue(value || '', 1);
-      }
-    }, 1);
+  writeValue(value: string): void {
+    this.markdownValue = value;
   }
 
   registerOnChange(fn: (_: any) => {}): void {
