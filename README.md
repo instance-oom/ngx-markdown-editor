@@ -7,6 +7,7 @@ Angular markdown editor based on ace editor
 [![GitHub license](https://img.shields.io/github/license/lon-yang/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)](https://github.com/lon-yang/ngx-markdown-editor/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/lon-yang/ngx-markdown-editor?color=rgb%252868%252C%2520204%252C%252017%2529)](https://github.com/lon-yang/ngx-markdown-editor/stargazers)
 ![GitHub issues](https://img.shields.io/github/issues-raw/lon-yang/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)
+[![StackBlitz](http://img.shields.io/badge/StackBlitz-Edit-blue)](https://stackblitz.com/edit/ngx-markdown-editor)
 
 # Usage
 
