@@ -281,12 +281,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   onDrop(evt: DragEvent) {
     evt.stopImmediatePropagation();
     evt.preventDefault();
-    if (!this._hasUploadFunction || this.isUploading) return;
-
-    if (!evt.dataTransfer.files || evt.dataTransfer.files.length === 0) {
-      this.dragover = false;
-      return;
-    }
 
     this._uploadFiles(evt.dataTransfer.files);
   }
@@ -383,14 +377,19 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   private _onAceEditorPaste(event: ClipboardEvent): void {
-    if (!this._hasUploadFunction || this.isUploading) return;
-
-    if (event.clipboardData.files.length > 0) {
+    if (event.clipboardData) {
       this._uploadFiles(event.clipboardData.files);
     }
   }
 
   private _uploadFiles(files: FileList): void {
+    if (!this._hasUploadFunction || this.isUploading) return;
+
+    if (!files || files.length === 0) {
+      this.dragover = false;
+      return;
+    }
+
     this.isUploading = true;
 
     // force dragover to be true, as Uploading mask won't work otherwise
