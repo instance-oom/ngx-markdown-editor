@@ -130,8 +130,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
     this._markedJsOpt = Object.assign({}, markedjsOpt, this.options.markedjsOpt);
-
-    this.aceEditorContainer.nativeElement.addEventListener('paste', this._onAceEditorPaste.bind(this))
   }
 
   ngAfterViewInit() {
@@ -292,6 +290,12 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.dragover = false;
   }
 
+  onAceEditorPaste(event: ClipboardEvent): void {
+    if (event.clipboardData) {
+      this._uploadFiles(event.clipboardData.files);
+    }
+  }
+
   private _updateMarkdownValue(value: any, changedByUser: boolean = false) {
     const normalizedValue = typeof value === 'string' ? value : (value || '').toString();
     if (this._markdownValue === normalizedValue) return;
@@ -373,12 +377,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
             }
           };
       }
-    }
-  }
-
-  private _onAceEditorPaste(event: ClipboardEvent): void {
-    if (event.clipboardData) {
-      this._uploadFiles(event.clipboardData.files);
     }
   }
 
