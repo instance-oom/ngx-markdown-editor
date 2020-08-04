@@ -71,7 +71,7 @@
         </div>
         <div class="drag-container drag-container-mask" (drop)="onDrop($event)" (dragleave)="onDragleave($event)"></div>
         <div class="editor-panel">
-          <div class="ace-editor" #aceEditor></div>
+          <div class="ace-editor" #aceEditor (paste)="onAceEditorPaste($event)"></div>
         </div>
       </div>
       <div class="preview-container" [style.display]="(mode == 'preview' || showPreviewPanel) ? 'block' : 'none'"

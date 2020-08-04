@@ -279,40 +279,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   onDrop(evt: DragEvent) {
     evt.stopImmediatePropagation();
     evt.preventDefault();
-    if (!this._hasUploadFunction || this.isUploading) return;
 
-    if (!evt.dataTransfer.files || evt.dataTransfer.files.length === 0) {
-      this.dragover = false;
-      return;
-    }
-
-    this.isUploading = true;
-    Promise.resolve()
-      .then(() => {
-        return this.upload(evt.dataTransfer.files);
-      })
-      .then(data => {
-        if (Array.isArray(data)) {
-          let msg = [];
-          for (let item of data) {
-            let tempMsg = `[${item.name}](${item.url})`;
-            if (item.isImg) {
-              tempMsg = `!${tempMsg}`;
-            }
-            msg.push(tempMsg);
-          }
-          this.insertContent('Custom', msg.join('\r\n'));
-        } else {
-          console.warn('Invalid upload result. Please using follow this type `UploadResult`.')
-        }
-        this.isUploading = false;
-        this.dragover = false;
-      })
-      .catch(err => {
-        console.error(err);
-        this.isUploading = false;
-        this.dragover = false;
-      });
+    this._uploadFiles(evt.dataTransfer.files);
   }
 
   onDragleave(evt: DragEvent) {
@@ -320,6 +288,12 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     evt.preventDefault();
     if (!this._hasUploadFunction) return;
     this.dragover = false;
+  }
+
+  onAceEditorPaste(event: ClipboardEvent): void {
+    if (event.clipboardData) {
+      this._uploadFiles(event.clipboardData.files);
+    }
   }
 
   private _updateMarkdownValue(value: any, changedByUser: boolean = false) {
@@ -404,5 +378,46 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
           };
       }
     }
+  }
+
+  private _uploadFiles(files: FileList): void {
+    if (!this._hasUploadFunction || this.isUploading) return;
+
+    if (!files || files.length === 0) {
+      this.dragover = false;
+      return;
+    }
+
+    this.isUploading = true;
+
+    // force dragover to be true, as Uploading mask won't work otherwise
+    this.dragover = true;
+
+    Promise.resolve()
+      .then(() => {
+        return this.upload(files);
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          let msg = [];
+          for (let item of data) {
+            let tempMsg = `[${item.name}](${item.url})`;
+            if (item.isImg) {
+              tempMsg = `!${tempMsg}`;
+            }
+            msg.push(tempMsg);
+          }
+          this.insertContent('Custom', msg.join('\r\n'));
+        } else {
+          console.warn('Invalid upload result. Please using follow this type `UploadResult`.')
+        }
+        this.isUploading = false;
+        this.dragover = false;
+      })
+      .catch(err => {
+        console.error(err);
+        this.isUploading = false;
+        this.dragover = false;
+      });
   }
 }
