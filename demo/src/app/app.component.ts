@@ -76,6 +76,7 @@ export class AppComponent {
   }
 
   doUpload(files: Array<File>): Promise<Array<UploadResult>> {
+    console.log(files);
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         let result: Array<UploadResult> = [];
@@ -117,7 +118,8 @@ export class AppComponent {
   }
 
   onPreviewDomChanged(dom: HTMLElement) {
-    console.log(dom);
-    console.log(dom.innerHTML)
+    console.log(`onPreviewDomChanged fired`);
+    // console.log(dom);
+    // console.log(dom.innerHTML)
   }
 }

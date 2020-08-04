@@ -291,7 +291,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   onAceEditorPaste(event: ClipboardEvent): void {
-    if (event.clipboardData) {
+    if (event instanceof ClipboardEvent && event.clipboardData.files.length > 0) {
       this._uploadFiles(event.clipboardData.files);
     }
   }
