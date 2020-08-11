@@ -1,6 +1,6 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "3.2.3",
+  "version": "3.2.4",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "postbuild": "npm run build:schematics && npm run copy",
     "build:schematics": "tsc -p tsconfig.schematics.json",
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port=4300",
     "build:demo": "ng build",
     "copy": "npm run copy:assets && npm run copy:schemas && npm run copy:collection",
     "copy:assets": "xcopy src\\assets dist\\assets /S/E/I",

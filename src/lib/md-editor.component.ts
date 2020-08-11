@@ -1,5 +1,6 @@
-import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef, NgZone } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef, NgZone, Inject, PLATFORM_ID } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdEditorOption } from './md-editor.types';
 
@@ -106,11 +107,15 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private get _hasUploadFunction(): boolean {
     return this.upload && this.upload instanceof Function;
   }
+  private get _isInBrowser(): boolean {
+    return isPlatformBrowser(this.platform);
+  }
 
   private _onChange = (_: any) => { };
   private _onTouched = () => { };
 
   constructor(
+    @Inject(PLATFORM_ID) private platform: Object,
     @Attribute('required') public required: boolean = false,
     @Attribute('maxlength') public maxlength: number = -1,
     private _ngZone: NgZone,
@@ -120,6 +125,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   ngOnInit() {
+    if (!this._isInBrowser) return;
     let markedRender = new marked.Renderer();
     markedRender.image = this._getRender('image');
     markedRender.code = this._getRender('code');
@@ -133,6 +139,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   }
 
   ngAfterViewInit() {
+    if (!this._isInBrowser) return;
     let editorElement = this.aceEditorContainer.nativeElement;
     let editor = ace.edit(editorElement);
     editor.$blockScrolling = Infinity;
