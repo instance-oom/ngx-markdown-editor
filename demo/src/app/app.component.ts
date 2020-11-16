@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, SecurityContext } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { UploadResult, MdEditorOption } from './../../../src/public_api';
 
 @Component({
@@ -21,12 +22,15 @@ export class AppComponent {
         out += (<any>this.options).xhtml ? "/>" : ">";
         return out;
       }
+    },
+    markedjsOpt: {
+      sanitize: true
     }
   };
   public content: string;
   public mode: string = 'editor';
 
-  constructor() {
+  constructor(private _domSanitizer: DomSanitizer) {
     this.preRender = this.preRender.bind(this);
     this.postRender = this.postRender.bind(this);
   }
@@ -48,6 +52,7 @@ export class AppComponent {
     contentArr.push('- test');
     contentArr.push('');
     contentArr.push('[Link](https://www.google.com)');
+    contentArr.push(`<img src="1" onerror="alert(1)" />`);
     contentArr.push('');
     this.content = contentArr.join('\r\n');
   }

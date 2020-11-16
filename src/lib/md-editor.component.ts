@@ -1,8 +1,8 @@
-import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef, NgZone, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, EventEmitter, ElementRef, NgZone, Inject, PLATFORM_ID, SecurityContext } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdEditorOption } from './md-editor.types';
+import { MdEditorOption, MarkedjsOption } from './md-editor.types';
 
 declare let ace: any;
 declare let marked: any;
@@ -102,7 +102,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   private _aceEditorIns: any;
   private _aceEditorResizeTimer: any;
   private _convertMarkdownToHtmlTimer: any;
-  private _markedJsOpt: any;
+  private _markedJsOpt: MarkedjsOption;
   private _isValueSettedByprogrammatically: boolean;
   private get _hasUploadFunction(): boolean {
     return this.upload && this.upload instanceof Function;
@@ -136,6 +136,11 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       highlight: (code: any) => hljs.highlightAuto(code).value
     };
     this._markedJsOpt = Object.assign({}, markedjsOpt, this.options.markedjsOpt);
+    if (this._markedJsOpt.sanitize === true && typeof this._markedJsOpt.sanitizer !== 'function') {
+      this._markedJsOpt.sanitizer = (markdownString) => {
+        return this._domSanitizer.sanitize(SecurityContext.HTML, markdownString);
+      }
+    }
   }
 
   ngAfterViewInit() {
