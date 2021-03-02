@@ -185,7 +185,7 @@ export class AppModule { }
   
   doUpload(files: Array<File>): Promise<Array<UploadResult>> {
     // do upload file by yourself
-    return Pormise.resolve([{ name: 'xxx', url: 'xxx.png', isImg: true }]);
+    return Promise.resolve([{ name: 'xxx', url: 'xxx.png', isImg: true }]);
   }
   
   interface UploadResult {
