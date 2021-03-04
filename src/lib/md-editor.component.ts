@@ -73,7 +73,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       this.showPreviewPanel = _options.showPreviewPanel;
     }
     if (Array.isArray(_options.hideIcons)) {
-      _options.hideIcons.forEach((v: any) => _hideIcons[v] = true);
+      _options.hideIcons.forEach((v: any) => {
+        if (v === 'Refrence') v = 'Reference';
+        _hideIcons[v] = true
+      });
     }
     this._options = _options;
     this.hideIcons = _hideIcons;
@@ -213,8 +216,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         initText = 'Heading';
         selectedText = `# ${selectedText || initText}`;
         break;
-      case 'Refrence':
-        initText = 'Refrence';
+      case 'Reference':
+        initText = 'Reference';
         selectedText = `> ${selectedText || initText}`;
         break;
       case 'Link':

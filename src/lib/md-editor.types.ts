@@ -1,7 +1,7 @@
 export interface MdEditorOption {
   showPreviewPanel?: boolean    // Show preview panel, Default is `true`
   showBorder?: boolean          // Show editor component's border
-  hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Refrence', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen'], Default is empty
+  hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen'], Default is empty
   usingFontAwesome5?: boolean   // Using font awesome with version 5, Default is false
   scrollPastEnd?: number        // The option for ace editor
   enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc.
