@@ -367,7 +367,14 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         case 'code':
           return function (code: any, language: any) {
             let validLang = !!(language && hljs.getLanguage(language));
-            let highlighted = validLang ? hljs.highlight(language, code).value : code;
+            let highlighted = '';
+            if (validLang) {
+              highlighted = hljs.highlight(language, code).value;
+            } else {
+              let pre = document.createElement('pre');
+              pre.innerText = code;
+              highlighted = pre.innerHTML;
+            }
             return `<pre style="padding: 0; border-radius: 0;"><code class="hljs ${language}">${highlighted}</code></pre>`;
           };
         case 'table':
