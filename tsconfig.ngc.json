@@ -4,7 +4,8 @@
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
     "strictTemplates": false,
-    "enableResourceInlining": true
+    "enableResourceInlining": true,
+    "compilationMode": "partial"
   },
   "buildOnSave": false,
   "compileOnSave": false,
