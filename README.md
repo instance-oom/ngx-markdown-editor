@@ -13,9 +13,6 @@ Angular markdown editor based on ace editor
 
 ### Installation
 
-<details open>
-<summary>>=3.0.0</summary>
-<p></p>
 Install dependencies from npm repository:
   
 ```bash
@@ -69,7 +66,6 @@ Add `ace.js` in `index.html`
   <body></body>
 </html>
 ```
-</details>
 
 <details>
 <summary><=2.5.0</summary>
@@ -150,6 +146,7 @@ export class AppModule { }
   (onPreviewDomChanged)="onPreviewDomChanged($event)"
   required 
   maxlength="500">
+  <slot custom-btns></slot>
 </md-editor>
 ```
 

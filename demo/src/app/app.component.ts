@@ -80,6 +80,17 @@ export class AppComponent {
     this.options = Object.assign({}, this.options);
   }
 
+  uploadImg(evt) {
+    if (!evt) return;
+    const file = evt.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      this.content += `![](${reader.result})`
+    }, false);
+
+    if (file) reader.readAsDataURL(file);
+  }
+
   doUpload(files: Array<File>): Promise<Array<UploadResult>> {
     console.log(files);
     return new Promise((resolve, reject) => {
@@ -99,6 +110,9 @@ export class AppComponent {
 
   onEditorLoaded(editor) {
     console.log(`ACE Editor Ins: `, editor);
+
+    editor.setShowPrintMargin(false)
+
     // editor.setOption('showLineNumbers', false);
 
     // setTimeout(() => {

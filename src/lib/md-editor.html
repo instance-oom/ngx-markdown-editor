@@ -51,6 +51,9 @@
           <i class="fa" [class.fa-eye]="!showPreviewPanel" [class.fa-eye-slash]="showPreviewPanel"></i>
         </button>
       </div>
+      <div class="btn-group">
+        <ng-content select="[custom-btns]"></ng-content>
+      </div>
       <div class="btn-group pull-right hide-split">
         <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()"
           *ngIf="!hideIcons.FullScreen">

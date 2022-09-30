@@ -80,21 +80,21 @@
       .btn-group {
         padding: 6px;
 
-        &:first-child>.btn:first-child::before {
+        &:first-child::before {
           display: none;
         }
 
-        &>.btn:first-child::before {
+        &::before {
           content: ' ';
           background-color: darkgray;
           width: 1px;
-          height: 24px;
-          left: -9px;
-          top: 2px;
+          height: 20px;
+          left: 0px;
+          top: 12px;
           position: absolute;
         }
 
-        &.hide-split>.btn:first-child::before {
+        &.hide-split::before {
           display: none;
         }
       }
