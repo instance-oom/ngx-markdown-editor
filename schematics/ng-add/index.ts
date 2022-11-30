@@ -48,7 +48,9 @@ function updateAngularJson(_options: any) {
     };
     let styles = [
       'node_modules/bootstrap/dist/css/bootstrap.min.css',
-      'node_modules/font-awesome/css/font-awesome.min.css',
+      'node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css',
+      "node_modules/@fortawesome/fontawesome-free/css/solid.min.css",
+      "node_modules/@fortawesome/fontawesome-free/css/regular.min.css",
       'node_modules/ngx-markdown-editor/assets/highlight.js/agate.min.css'
     ]
     let scripts = [

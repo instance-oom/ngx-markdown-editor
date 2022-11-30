@@ -386,11 +386,11 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
             if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
               if (text.startsWith('<input')) {
                 text = text
-                  .replace('<input disabled="" type="checkbox">', '<i class="fa fa-square-o"></i>')
+                  .replace('<input disabled="" type="checkbox">', '<i class="far fa-square"></i>')
                   .replace('<input checked="" disabled="" type="checkbox">', '<i class="fa fa-check-square"></i>');
               } else {
                 text = text
-                  .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o"></i> ')
+                  .replace(/^\s*\[ \]\s*/, '<i class="far fa-square"></i> ')
                   .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square"></i> ');
               }
               return `<li>${text}</li>`;
