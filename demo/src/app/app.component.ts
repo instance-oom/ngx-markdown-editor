@@ -10,7 +10,7 @@ import { UploadResult, MdEditorOption } from './../../../src/public_api';
 export class AppComponent {
 
   public options: MdEditorOption = {
-    showPreviewPanel: false,
+    showPreviewPanel: true,
     enablePreviewContentClick: false,
     resizable: true,
     customRender: {
@@ -23,6 +23,24 @@ export class AppComponent {
         return out;
       }
     },
+    fontAwesomeVersion: '6',
+    // usingFontAwesome5: true,
+    // customIcons: {
+    //   Bold: { fontClass: 'fa-solid fa-bold' },
+    //   Italic: { fontClass: 'fa-solid fa-italic' },
+    //   Heading: { fontClass: 'fa-solid fa-heading' },
+    //   Reference: { fontClass: 'fa-solid fa-quote-left' },
+    //   Link: { fontClass: 'fa-solid fa-link' },
+    //   Image: { fontClass: 'fa-solid fa-image' },
+    //   UnorderedList: { fontClass: 'fa-solid fa-list-ul' },
+    //   OrderedList: { fontClass: 'fa-solid fa-list-ol' },
+    //   CodeBlock: { fontClass: 'fa-solid fa-file-code' },
+    //   ShowPreview: { fontClass: 'fa-solid fa-eye' },
+    //   HidePreview: { fontClass: 'fa-solid fa-eye-slash' },
+    //   FullScreen: { fontClass: 'fa-solid fa-maximize' },
+    //   CheckBox_UnChecked: { fontClass: 'fa-regular fa-square' },
+    //   CheckBox_Checked: { fontClass: 'fa-solid fa-check-square' }
+    // },
     markedjsOpt: {
       sanitize: true
     }

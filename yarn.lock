@@ -146,7 +146,7 @@
     symbol-observable "4.0.0"
     uuid "8.3.2"
 
-"@angular/common@^13.3.11":
+"@angular/common@13.3.11":
   version "13.3.11"
   resolved "https://a.newegg.org:443/artifactory/api/npm/newegg-npm/@angular/common/-/common-13.3.11.tgz#bcd42bb078ffd3712625be35dc6ec7b6ab828df7"
   integrity sha1-vNQrsHj/03EmJb413G7HtquCjfc=
@@ -1299,6 +1299,11 @@
   version "0.14.54"
   resolved "https://a.newegg.org:443/artifactory/api/npm/newegg-npm/@esbuild/linux-loong64/-/linux-loong64-0.14.54.tgz#de2a4be678bd4d0d1ffbb86e6de779cde5999028"
   integrity sha1-3ipL5ni9TQ0f+7hubed5zeWZkCg=
+
+"@fortawesome/fontawesome-free@^6.2.1":
+  version "6.2.1"
+  resolved "https://a.newegg.org:443/artifactory/api/npm/newegg-npm/@fortawesome/fontawesome-free/-/fontawesome-free-6.2.1.tgz#344baf6ff9eaad7a73cff067d8c56bfc11ae5304"
+  integrity sha1-NEuvb/nqrXpzz/Bn2MVr/BGuUwQ=
 
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"

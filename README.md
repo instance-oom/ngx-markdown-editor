@@ -162,6 +162,7 @@ export class AppModule { }
     showBorder?: boolean          // Show editor component's border. Default is true
     hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
     usingFontAwesome5?: boolean   // Using font awesome with version 5, Default is false
+    fontAwesomeVersion?: '4' | '5' | '6'   // FontAwesome Version, 4/5/6, default is 4
     scrollPastEnd?: number        // The option for ace editor. Default is 0
     enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc. Default is false
     resizable?: boolean           // Allow resize the editor
@@ -171,7 +172,23 @@ export class AppModule { }
       table?: Function     // Table Render
       code?: Function      // Code Render
       listitem?: Function  // Listitem Render
-    }
+    },
+    customIcons?: {               // Custom icons in toolbar, default using font-awesome 4.x
+      Bold?: CustomIcon;
+      Italic?: CustomIcon;
+      Heading?: CustomIcon;
+      Reference?: CustomIcon;
+      Link?: CustomIcon;
+      Image?: CustomIcon;
+      UnorderedList?: CustomIcon;
+      OrderedList?: CustomIcon;
+      CodeBlock?: CustomIcon;
+      ShowPreview?: CustomIcon;
+      HidePreview?: CustomIcon;
+      FullScreen?: CustomIcon;
+      CheckBox_UnChecked?: CustomIcon;
+      CheckBox_Checked?: CustomIcon;
+    };
   }
   ```
 - upload(`Function`): For [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24), upload file by yourself

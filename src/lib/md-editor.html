@@ -1,54 +1,44 @@
-<div class="md-editor-container" [class.font-awesome5]="options?.usingFontAwesome5" [class.fullscreen]="isFullScreen"
-  [class.md-editor-resizable]="options?.resizable" [style.height]="height">
+<div class="md-editor-container" [class.fullscreen]="isFullScreen" [class.md-editor-resizable]="options?.resizable" [style.height]="height">
   <div class="md-layout">
     <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" title="Bold" (click)="insertContent('Bold')"
-          *ngIf="!hideIcons.Bold">
-          <i class="fa fa-bold"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Bold" (click)="insertContent('Bold')" *ngIf="!hideIcons.Bold">
+          <i [class]="options.customIcons.Bold.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" title="Italic" (click)="insertContent('Italic')"
-          *ngIf="!hideIcons.Italic">
-          <i class="fa fa-italic"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Italic" (click)="insertContent('Italic')" *ngIf="!hideIcons.Italic">
+          <i [class]="options.customIcons.Italic.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" title="Heading" (click)="insertContent('Heading')"
-          *ngIf="!hideIcons.Heading">
-          <i class="fa fa-header"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Heading" (click)="insertContent('Heading')" *ngIf="!hideIcons.Heading">
+          <i [class]="options.customIcons.Heading.fontClass"></i>
         </button>
         <button class="btn btn-sm btn-default" type="button" title="Reference" (click)="insertContent('Reference')"
           *ngIf="!hideIcons.Reference">
-          <i class="fa fa-quote-left"></i>
+          <i [class]="options.customIcons.Reference.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" title="Link" (click)="insertContent('Link')"
-          *ngIf="!hideIcons.Link">
-          <i class="fa fa-link"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Link" (click)="insertContent('Link')" *ngIf="!hideIcons.Link">
+          <i [class]="options.customIcons.Link.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" title="Image" (click)="insertContent('Image')"
-          *ngIf="!hideIcons.Image">
-          <i class="fa fa-image"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Image" (click)="insertContent('Image')" *ngIf="!hideIcons.Image">
+          <i [class]="options.customIcons.Image.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" title="Unordered List" (click)="insertContent('Ul')"
-          *ngIf="!hideIcons.Ul">
-          <i class="fa fa-list-ul"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Unordered List" (click)="insertContent('Ul')" *ngIf="!hideIcons.Ul">
+          <i [class]="options.customIcons.UnorderedList.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" title="Ordered List" (click)="insertContent('Ol')"
-          *ngIf="!hideIcons.Ol">
-          <i class="fa fa-list-ol"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Ordered List" (click)="insertContent('Ol')" *ngIf="!hideIcons.Ol">
+          <i [class]="options.customIcons.OrderedList.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" title="Code Block" (click)="insertContent('Code')"
-          *ngIf="!hideIcons.Code">
-          <i class="fa fa-file-code-o"></i>
+        <button class="btn btn-sm btn-default" type="button" title="Code Block" (click)="insertContent('Code')" *ngIf="!hideIcons.Code">
+          <i [class]="options.customIcons.CodeBlock.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button"
-          [attr.title]="showPreviewPanel ? 'Hide Preview' : 'Show Preview'" (click)="togglePreview()"
-          *ngIf="!hideIcons.TogglePreview">
-          <i class="fa" [class.fa-eye]="!showPreviewPanel" [class.fa-eye-slash]="showPreviewPanel"></i>
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="showPreviewPanel ? 'Hide Preview' : 'Show Preview'"
+          (click)="togglePreview()" *ngIf="!hideIcons.TogglePreview">
+          <i [class]="showPreviewPanel ? options.customIcons.ShowPreview.fontClass : options.customIcons.HidePreview.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
@@ -57,18 +47,19 @@
       <div class="btn-group pull-right hide-split">
         <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" (click)="fullScreen()"
           *ngIf="!hideIcons.FullScreen">
-          <i class="fa" [class.fa-arrows-alt]="!options?.usingFontAwesome5 || !isFullScreen"
-            [class.fa-compress]="options?.usingFontAwesome5 && isFullScreen"></i>
+          <i [class]="options.customIcons.FullScreen.fontClass"></i>
         </button>
       </div>
     </div>
     <div class="editor-container">
-      <div [class.dragover]="dragover" [style.display]="mode == 'preview' ? 'none' : null"
-        (dragover)="onDragover($event)">
+      <div [class.dragover]="dragover" [style.display]="mode == 'preview' ? 'none' : null" (dragover)="onDragover($event)">
         <div class="drag-container">
           <div class="upload-loading">
-            <i class="fa fa-upload" *ngIf="!isUploading"></i>
-            <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isUploading"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" *ngIf="!isUploading" fill="#fff">
+              <path
+                d="M288 109.3V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3l-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352H192c0 35.3 28.7 64 64 64s64-28.7 64-64H448c35.3 0 64 28.7 64 64v32c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V416c0-35.3 28.7-64 64-64zM432 456c13.3 0 24-10.7 24-24s-10.7-24-24-24s-24 10.7-24 24s10.7 24 24 24z" />
+            </svg>
+            <div class="lds-dual-ring" *ngIf="isUploading"></div>
             <div class="text">{{ isUploading ? 'Uploading' : 'Drag it here' }}</div>
           </div>
         </div>

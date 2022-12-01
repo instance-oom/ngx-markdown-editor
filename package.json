@@ -1,6 +1,6 @@
 {
   "name": "ngx-markdown-editor",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Angular markdown editor based on ace editor",
   "main": "index.js",
   "scripts": {
@@ -52,6 +52,7 @@
     "@angular/platform-browser": "13.3.11",
     "@angular/platform-browser-dynamic": "13.3.11",
     "@angular/router": "13.3.11",
+    "@fortawesome/fontawesome-free": "^6.2.1",
     "ace-builds": "^1.4.13",
     "bootstrap": "4.6.2",
     "font-awesome": "^4.7.0",

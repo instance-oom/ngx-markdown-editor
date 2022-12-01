@@ -30,44 +30,6 @@
     }
   }
 
-  &.font-awesome5 {
-    .fa {
-      &.fa-bold {}
-
-      &.fa-italic {}
-
-      &.fa-header::before {
-        content: "\f1dc";
-      }
-
-      &.fa-quote-left {}
-
-      &.fa-link {}
-
-      &.fa-image {}
-
-      &.fa-list-ul {}
-
-      &.fa-list-ol {}
-
-      &.fa-file-code-o::before {
-        content: "\f121";
-      }
-
-      &.fa-eye {}
-
-      &.fa-eye-slash {}
-
-      &.fa-arrows-alt::before {
-        content: "\f065";
-      }
-
-      &.fa-upload {}
-
-      &.fa-spinner {}
-    }
-  }
-
   .md-layout {
     height: 100%;
     display: flex;
@@ -196,4 +158,33 @@
   .pull-right {
     float: right;
   }
+
+  .lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+  }
+
+  .lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+
+  @keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
 }

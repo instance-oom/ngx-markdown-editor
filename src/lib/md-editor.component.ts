@@ -2,7 +2,7 @@ import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdEditorOption, MarkedjsOption } from './md-editor.types';
+import { MdEditorOption, MarkedjsOption, DEFAULT_ICONS } from './md-editor.types';
 
 declare let ace: any;
 declare let marked: any;
@@ -15,7 +15,8 @@ const DEFAULT_EDITOR_OPTION: MdEditorOption = {
   usingFontAwesome5: false,
   scrollPastEnd: 0,
   enablePreviewContentClick: false,
-  resizable: false
+  resizable: false,
+  customIcons: DEFAULT_ICONS.fontAwesome4
 }
 
 @Component({
@@ -64,24 +65,33 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   @Input()
   public get options(): MdEditorOption {
-    return this._options || {};
+    return this._options;
   }
   public set options(value: MdEditorOption) {
-    let _options = Object.assign(DEFAULT_EDITOR_OPTION, {}, value);
-    let _hideIcons = {};
-    if (typeof _options.showPreviewPanel === 'boolean') {
-      this.showPreviewPanel = _options.showPreviewPanel;
+    const options = Object.assign({}, DEFAULT_EDITOR_OPTION, value);
+
+    let defaultIcons = DEFAULT_ICONS.fontAwesome4;
+    if (value.fontAwesomeVersion && ['4', '5', '6'].indexOf(value.fontAwesomeVersion.toString()) !== -1) {
+      defaultIcons = DEFAULT_ICONS[`fontAwesome${value.fontAwesomeVersion}`];
+    } else if (value.usingFontAwesome5) {
+      defaultIcons = DEFAULT_ICONS.fontAwesome5;
     }
-    if (Array.isArray(_options.hideIcons)) {
-      _options.hideIcons.forEach((v: any) => {
+
+    options.customIcons = Object.assign({}, defaultIcons, value.customIcons);
+    const hideIcons = {};
+    if (typeof options.showPreviewPanel === 'boolean') {
+      this.showPreviewPanel = options.showPreviewPanel;
+    }
+    if (Array.isArray(options.hideIcons)) {
+      options.hideIcons.forEach((v: any) => {
         if (v === 'Refrence') v = 'Reference';
-        _hideIcons[v] = true
+        hideIcons[v] = true
       });
     }
-    this._options = _options;
-    this.hideIcons = _hideIcons;
+    this._options = options;
+    this.hideIcons = hideIcons;
   }
-  private _options: any = {};
+  private _options: any = Object.assign({}, DEFAULT_EDITOR_OPTION);
 
   @Output() public onEditorLoaded: EventEmitter<any> = new EventEmitter<any>();
   @Output() public onPreviewDomChanged: EventEmitter<HTMLElement> = new EventEmitter<HTMLElement>();
@@ -382,16 +392,18 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
             return `<table class="table table-bordered">\n<thead>\n${header}</thead>\n<tbody>\n${body}</tbody>\n</table>\n`;
           };
         case 'listitem':
+          const checkedCheckbox = `<i class="${this.options.customIcons.CheckBox_Checked.fontClass}"></i> `,
+            unCheckedCheckbox = `<i class="${this.options.customIcons.CheckBox_UnChecked.fontClass}"></i> `;
           return function (text: any, task: boolean, checked: boolean) {
             if (/^\s*\[[x ]\]\s*/.test(text) || text.startsWith('<input')) {
               if (text.startsWith('<input')) {
                 text = text
-                  .replace('<input disabled="" type="checkbox">', '<i class="fa fa-square-o"></i>')
-                  .replace('<input checked="" disabled="" type="checkbox">', '<i class="fa fa-check-square"></i>');
+                  .replace('<input disabled="" type="checkbox">', unCheckedCheckbox)
+                  .replace('<input checked="" disabled="" type="checkbox">', checkedCheckbox);
               } else {
                 text = text
-                  .replace(/^\s*\[ \]\s*/, '<i class="fa fa-square-o"></i> ')
-                  .replace(/^\s*\[x\]\s*/, '<i class="fa fa-check-square"></i> ');
+                  .replace(/^\s*\[ \]\s*/, unCheckedCheckbox)
+                  .replace(/^\s*\[x\]\s*/, checkedCheckbox);
               }
               return `<li>${text}</li>`;
             } else {
