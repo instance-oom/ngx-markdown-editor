@@ -2,12 +2,13 @@
 Angular markdown editor based on ace editor
 
 [![npm version](https://img.shields.io/npm/v/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)](https://badge.fury.io/js/ngx-markdown-editor)
-[![peerDependencies Status](https://david-dm.org/lon-yang/ngx-markdown-editor/peer-status.svg)](https://david-dm.org/lon-yang/ngx-markdown-editor?type=peer)
 [![npm](https://img.shields.io/npm/dm/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)](https://www.npmjs.com/package/ngx-markdown-editor)
 [![GitHub license](https://img.shields.io/github/license/lon-yang/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)](https://github.com/lon-yang/ngx-markdown-editor/blob/master/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/lon-yang/ngx-markdown-editor?color=rgb%252868%252C%2520204%252C%252017%2529)](https://github.com/lon-yang/ngx-markdown-editor/stargazers)
 ![GitHub issues](https://img.shields.io/github/issues-raw/lon-yang/ngx-markdown-editor?color=rgb%2868%2C%20204%2C%2017%29)
-[![StackBlitz](http://img.shields.io/badge/StackBlitz-Edit-blue)](https://stackblitz.com/edit/ngx-markdown-editor)
+[![codesandbox.io](https://img.shields.io/badge/codesandbox.io-view-blue)](https://codesandbox.io/s/ngx-markdown-editor-zewm1u)
+
+[Online Demo](https://zewm1u.csb.app/)
 
 # Usage
 
