@@ -118,5 +118,8 @@
       }
     }
   },
-  "defaultProject": "ngx-markdown-editor-demo-demo"
+  "defaultProject": "ngx-markdown-editor-demo-demo",
+  "cli": {
+    "analytics": false
+  }
 }
