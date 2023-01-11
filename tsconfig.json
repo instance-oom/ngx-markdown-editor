@@ -15,7 +15,8 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "exclude": [
     "scripts",
