@@ -441,6 +441,12 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
             }
             msg.push(tempMsg);
           }
+          const range = this._aceEditorIns.selection.getRange();
+          const newRange = { start: { column: 0, row: range.end.row + 1 }, end: { column: 0, row: range.end.row + 1 } };
+          this._aceEditorIns.session.replace(newRange, '\r\n');
+          this._aceEditorIns.selection.setRange(newRange);
+          this._aceEditorIns.focus();
+
           this.insertContent('Custom', msg.join('\r\n'));
         } else {
           console.warn('Invalid upload result. Please using follow this type `UploadResult`.')

@@ -1,3 +1,7 @@
+## 5.1.0
+
+- Fix #130
+
 ## 5.0.0
 
 - Upgrade to Angular 15
