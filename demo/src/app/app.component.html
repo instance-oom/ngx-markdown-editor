@@ -3,7 +3,7 @@
     <input type="text" class="form-control" name="Test" [(ngModel)]="content">
     <md-editor #md="ngModel" name="Content" (onEditorLoaded)="onEditorLoaded($event)" [preRender]="preRender" [postRender]="postRender"
       (onPreviewDomChanged)="onPreviewDomChanged($event)" [upload]="doUpload" [(ngModel)]="content" [mode]="mode" [options]="options"
-      required maxlength="600" height="400px">
+      required [maxlength]="maxLength" height="400px">
       <div custom-btns>
         <input #imgInput type="file" style="display: none" (change)="uploadImg($event)" />
         <button type="button" class="btn btn-sm btn-default" (click)="imgInput.click()">Upload Img</button>

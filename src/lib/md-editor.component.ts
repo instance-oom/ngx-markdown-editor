@@ -47,6 +47,16 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   @Input() public postRender: Function;
   @Input() public upload: Function;
 
+  @Input('maxlength')
+  public get maxlength(): number {
+    return this._maxlength;
+  }
+  public set maxlength(val: number | string) {
+    if (!Number.isInteger(val)) val = parseInt(val as string, 10);
+    if (Number.isInteger(val)) this._maxlength = val as number;
+  }
+  private _maxlength: number = -1;
+
   @Input()
   public get mode(): string {
     return this._mode;
@@ -130,7 +140,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   constructor(
     @Inject(PLATFORM_ID) private platform: Object,
     @Attribute('required') public required: boolean = false,
-    @Attribute('maxlength') public maxlength: number = -1,
     private _ngZone: NgZone,
     private _renderer2: Renderer2,
     private _domSanitizer: DomSanitizer) {

@@ -9,6 +9,7 @@ import { UploadResult, MdEditorOption } from './../../../src/public_api';
 })
 export class AppComponent {
 
+  public maxLength = 300;
   public options: MdEditorOption = {
     showPreviewPanel: true,
     enablePreviewContentClick: false,
