@@ -2,41 +2,41 @@
   <div class="md-layout">
     <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Bold.title" (click)="insertContent('Bold')" *ngIf="!hideIcons.Bold">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Bold.title" (click)="insertContent('Bold')" *ngIf="!hideIcons.Bold">
           <i [class]="options.customIcons.Bold.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Italic.title" (click)="insertContent('Italic')" *ngIf="!hideIcons.Italic">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Italic.title" (click)="insertContent('Italic')" *ngIf="!hideIcons.Italic">
           <i [class]="options.customIcons.Italic.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Heading.title" (click)="insertContent('Heading')" *ngIf="!hideIcons.Heading">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Heading.title" (click)="insertContent('Heading')" *ngIf="!hideIcons.Heading">
           <i [class]="options.customIcons.Heading.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Reference.title" (click)="insertContent('Reference')"
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Reference.title" (click)="insertContent('Reference')"
           *ngIf="!hideIcons.Reference">
           <i [class]="options.customIcons.Reference.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Link.title" (click)="insertContent('Link')" *ngIf="!hideIcons.Link">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Link.title" (click)="insertContent('Link')" *ngIf="!hideIcons.Link">
           <i [class]="options.customIcons.Link.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.Image.title" (click)="insertContent('Image')" *ngIf="!hideIcons.Image">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Image.title" (click)="insertContent('Image')" *ngIf="!hideIcons.Image">
           <i [class]="options.customIcons.Image.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.UnorderedList.title" (click)="insertContent('Ul')" *ngIf="!hideIcons.Ul">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.UnorderedList.title" (click)="insertContent('Ul')" *ngIf="!hideIcons.Ul">
           <i [class]="options.customIcons.UnorderedList.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.OrderedList.title" (click)="insertContent('Ol')" *ngIf="!hideIcons.Ol">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.OrderedList.title" (click)="insertContent('Ol')" *ngIf="!hideIcons.Ol">
           <i [class]="options.customIcons.OrderedList.fontClass"></i>
         </button>
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="options.locales[locale].Buttons.CodeBlock.title" (click)="insertContent('Code')" *ngIf="!hideIcons.Code">
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.CodeBlock.title" (click)="insertContent('Code')" *ngIf="!hideIcons.Code">
           <i [class]="options.customIcons.CodeBlock.fontClass"></i>
         </button>
       </div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-default" type="button" [attr.title]="showPreviewPanel ? options.locales[locale].Buttons.HidePreview.title : options.locales[locale].Buttons.ShowPreview.title"
+        <button class="btn btn-sm btn-default" type="button" [attr.title]="showPreviewPanel ? buttonText.HidePreview.title : buttonText.ShowPreview.title"
           (click)="togglePreview()" *ngIf="!hideIcons.TogglePreview">
           <i [class]="showPreviewPanel ? options.customIcons.ShowPreview.fontClass : options.customIcons.HidePreview.fontClass"></i>
         </button>
@@ -45,7 +45,7 @@
         <ng-content select="[custom-btns]"></ng-content>
       </div>
       <div class="btn-group pull-right hide-split">
-        <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" [attr.title]="options.locales[locale].Buttons.Fullscreen.title" (click)="fullScreen()"
+        <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" [attr.title]="buttonText.Fullscreen.title" (click)="fullScreen()"
           *ngIf="!hideIcons.FullScreen">
           <i [class]="options.customIcons.FullScreen.fontClass"></i>
         </button>
@@ -60,7 +60,7 @@
                 d="M288 109.3V352c0 17.7-14.3 32-32 32s-32-14.3-32-32V109.3l-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352H192c0 35.3 28.7 64 64 64s64-28.7 64-64H448c35.3 0 64 28.7 64 64v32c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V416c0-35.3 28.7-64 64-64zM432 456c13.3 0 24-10.7 24-24s-10.7-24-24-24s-24 10.7-24 24s10.7 24 24 24z" />
             </svg>
             <div class="lds-dual-ring" *ngIf="isUploading"></div>
-            <div class="text">{{ isUploading ? options.locales[locale].Upload.Uploading : options.locales[locale].Upload.Drag }}</div>
+            <div class="text">{{ isUploading ? uploadText.Uploading : uploadText.Drag }}</div>
           </div>
         </div>
         <div class="drag-container drag-container-mask" (drop)="onDrop($event)" (dragleave)="onDragleave($event)"></div>

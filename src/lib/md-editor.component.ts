@@ -2,7 +2,7 @@ import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import {MdEditorOption, MarkedjsOption, DEFAULT_ICONS, DEFAULT_LOCALES} from './md-editor.types';
+import { MdEditorOption, MarkedjsOption, DEFAULT_ICONS, DEFAULT_LOCALES } from './md-editor.types';
 
 declare let ace: any;
 declare let marked: any;
@@ -44,10 +44,14 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   @ViewChild('previewContainer', { static: true }) public previewContainer: ElementRef;
   @Input() public hideToolbar: boolean = false;
   @Input() public height: string = "300px";
-  @Input() public locale: string = 'en';
   @Input() public preRender: Function;
   @Input() public postRender: Function;
   @Input() public upload: Function;
+
+  @Input()
+  public get locale(): string { return this._locale || 'en' }
+  public set locale(val: string) { this._locale = val; }
+  public _locale: string = 'en';
 
   @Input('maxlength')
   public get maxlength(): number {
@@ -104,7 +108,6 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     this.hideIcons = hideIcons;
 
     options.locales = Object.assign({}, DEFAULT_LOCALES, value.locales);
-
     this._options = options;
   }
   private _options: any = Object.assign({}, DEFAULT_EDITOR_OPTION);
@@ -117,6 +120,13 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public isFullScreen: boolean = false;
   public dragover: boolean = false;
   public isUploading: boolean = false;
+
+  public get localeText() {
+    const r = Object.assign({}, DEFAULT_LOCALES[this.locale], this.options.locales[this.locale]);
+    return Object.assign({}, DEFAULT_LOCALES.en, r);
+  }
+  public get buttonText() { return this.localeText.Buttons }
+  public get uploadText() { return this.localeText.Upload }
 
   //#region Markdown value and html value define
   public get markdownValue(): string {
@@ -229,20 +239,20 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     let range = this._aceEditorIns.selection.getRange();
     switch (type) {
       case 'Bold':
-        initText = this.options.locales[this.locale].Buttons.Bold.initText ?? this.options.locales[this.locale].Buttons.Bold.title;
+        initText = this.buttonText.Bold.initText ?? this.buttonText.Bold.title;
         selectedText = `**${selectedText || initText}**`;
         break;
       case 'Italic':
-        initText = this.options.locales[this.locale].Buttons.Italic.initText ?? this.options.locales[this.locale].Buttons.Italic.title;
+        initText = this.buttonText.Italic.initText ?? this.buttonText.Italic.title;
         selectedText = `*${selectedText || initText}*`;
         startSize = 1;
         break;
       case 'Heading':
-        initText = this.options.locales[this.locale].Buttons.Heading.initText ?? this.options.locales[this.locale].Buttons.Heading.title;
+        initText = this.buttonText.Heading.initText ?? this.buttonText.Heading.title;
         selectedText = `# ${selectedText || initText}`;
         break;
       case 'Reference':
-        initText = this.options.locales[this.locale].Buttons.Reference.initText ?? this.options.locales[this.locale].Buttons.Reference.title;
+        initText = this.buttonText.Reference.initText ?? this.buttonText.Reference.title;
         selectedText = `> ${selectedText || initText}`;
         break;
       case 'Link':
@@ -253,16 +263,16 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         selectedText = `![](http://)`;
         break;
       case 'Ul':
-        initText = this.options.locales[this.locale].Buttons.UnorderedList.initText ?? this.options.locales[this.locale].Buttons.UnorderedList.title;
+        initText = this.buttonText.UnorderedList.initText ?? this.buttonText.UnorderedList.title;
         selectedText = `- ${selectedText || initText}`
         break;
       case 'Ol':
-        initText = this.options.locales[this.locale].Buttons.OrderedList.initText ?? this.options.locales[this.locale].Buttons.OrderedList.title;
+        initText = this.buttonText.OrderedList.initText ?? this.buttonText.OrderedList.title;
         selectedText = `1. ${selectedText || initText}`
         startSize = 3;
         break;
       case 'Code':
-        initText = this.options.locales[this.locale].Buttons.CodeBlock.initText ?? this.options.locales[this.locale].Buttons.CodeBlock.title;
+        initText = this.buttonText.CodeBlock.initText ?? this.buttonText.CodeBlock.title;
         selectedText = "```language\r\n" + (selectedText || initText) + "\r\n```";
         startSize = 3;
         break;
