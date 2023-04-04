@@ -54,7 +54,7 @@ export interface MdEditorLocale {
     Fullscreen?: MdButtonLocale
   },
   Upload?: {
-    Drag: string
+    Drag?: string
     Uploading?: string
   }
 }
