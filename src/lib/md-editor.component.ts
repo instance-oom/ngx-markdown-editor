@@ -2,7 +2,7 @@ import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { MdEditorOption, MarkedjsOption, DEFAULT_ICONS } from './md-editor.types';
+import {MdEditorOption, MarkedjsOption, DEFAULT_ICONS, DEFAULT_LOCALES} from './md-editor.types';
 
 declare let ace: any;
 declare let marked: any;
@@ -16,7 +16,8 @@ const DEFAULT_EDITOR_OPTION: MdEditorOption = {
   scrollPastEnd: 0,
   enablePreviewContentClick: false,
   resizable: false,
-  customIcons: DEFAULT_ICONS.fontAwesome4
+  customIcons: DEFAULT_ICONS.fontAwesome4,
+  locales: DEFAULT_LOCALES
 }
 
 @Component({
@@ -43,6 +44,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   @ViewChild('previewContainer', { static: true }) public previewContainer: ElementRef;
   @Input() public hideToolbar: boolean = false;
   @Input() public height: string = "300px";
+  @Input() public locale: string = 'en';
   @Input() public preRender: Function;
   @Input() public postRender: Function;
   @Input() public upload: Function;
@@ -87,19 +89,23 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       defaultIcons = DEFAULT_ICONS.fontAwesome5;
     }
 
-    options.customIcons = Object.assign({}, defaultIcons, value.customIcons);
-    const hideIcons = {};
     if (typeof options.showPreviewPanel === 'boolean') {
       this.showPreviewPanel = options.showPreviewPanel;
     }
+
+    options.customIcons = Object.assign({}, defaultIcons, value.customIcons);
+    const hideIcons = {};
     if (Array.isArray(options.hideIcons)) {
       options.hideIcons.forEach((v: any) => {
         if (v === 'Refrence') v = 'Reference';
         hideIcons[v] = true
       });
     }
-    this._options = options;
     this.hideIcons = hideIcons;
+
+    options.locales = Object.assign({}, DEFAULT_LOCALES, value.locales);
+
+    this._options = options;
   }
   private _options: any = Object.assign({}, DEFAULT_EDITOR_OPTION);
 
@@ -223,20 +229,20 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
     let range = this._aceEditorIns.selection.getRange();
     switch (type) {
       case 'Bold':
-        initText = 'Bold Text';
+        initText = this.options.locales[this.locale].Buttons.Bold.initText ?? this.options.locales[this.locale].Buttons.Bold.title;
         selectedText = `**${selectedText || initText}**`;
         break;
       case 'Italic':
-        initText = 'Italic Text';
+        initText = this.options.locales[this.locale].Buttons.Italic.initText ?? this.options.locales[this.locale].Buttons.Italic.title;
         selectedText = `*${selectedText || initText}*`;
         startSize = 1;
         break;
       case 'Heading':
-        initText = 'Heading';
+        initText = this.options.locales[this.locale].Buttons.Heading.initText ?? this.options.locales[this.locale].Buttons.Heading.title;
         selectedText = `# ${selectedText || initText}`;
         break;
       case 'Reference':
-        initText = 'Reference';
+        initText = this.options.locales[this.locale].Buttons.Reference.initText ?? this.options.locales[this.locale].Buttons.Reference.title;
         selectedText = `> ${selectedText || initText}`;
         break;
       case 'Link':
@@ -247,14 +253,16 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
         selectedText = `![](http://)`;
         break;
       case 'Ul':
+        initText = this.options.locales[this.locale].Buttons.UnorderedList.initText ?? this.options.locales[this.locale].Buttons.UnorderedList.title;
         selectedText = `- ${selectedText || initText}`
         break;
       case 'Ol':
+        initText = this.options.locales[this.locale].Buttons.OrderedList.initText ?? this.options.locales[this.locale].Buttons.OrderedList.title;
         selectedText = `1. ${selectedText || initText}`
         startSize = 3;
         break;
       case 'Code':
-        initText = 'Source Code';
+        initText = this.options.locales[this.locale].Buttons.CodeBlock.initText ?? this.options.locales[this.locale].Buttons.CodeBlock.title;
         selectedText = "```language\r\n" + (selectedText || initText) + "\r\n```";
         startSize = 3;
         break;
