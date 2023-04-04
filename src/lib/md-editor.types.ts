@@ -1,30 +1,89 @@
 export interface MdEditorOption {
-  showPreviewPanel?: boolean    // Show preview panel, Default is `true`
-  showBorder?: boolean          // Show editor component's border
-  hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen'], Default is empty
-  usingFontAwesome5?: boolean   // Using font awesome with version 5, Default is false
-  fontAwesomeVersion?: '4' | '5' | '6'   // FontAwesome Version, 4/5/6, default is 4
-  scrollPastEnd?: number        // The option for ace editor
+  showPreviewPanel?: boolean           // Show preview panel, Default is `true`
+  showBorder?: boolean                 // Show editor component's border
+  hideIcons?: Array<string>            // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen'], Default is empty
+  usingFontAwesome5?: boolean          // Using font awesome with version 5, Default is false
+  fontAwesomeVersion?: '4' | '5' | '6' // FontAwesome Version, 4/5/6, default is 4
+  scrollPastEnd?: number               // The option for ace editor
   enablePreviewContentClick?: boolean  // Allow user fire the click event on the preview panel, like href etc.
-  resizable?: boolean           // Allow resize the editor
-  markedjsOpt?: MarkedjsOption  // The markedjs option, see https://marked.js.org/#/USING_ADVANCED.md#options
-  customRender?: CustomRender   // Custom markedjs render
-  customIcons?: {               // Custom icons in toolbar
-    Bold?: CustomIcon;
-    Italic?: CustomIcon;
-    Heading?: CustomIcon;
-    Reference?: CustomIcon;
-    Link?: CustomIcon;
-    Image?: CustomIcon;
-    UnorderedList?: CustomIcon;
-    OrderedList?: CustomIcon;
-    CodeBlock?: CustomIcon;
-    ShowPreview?: CustomIcon;
-    HidePreview?: CustomIcon;
-    FullScreen?: CustomIcon;
-    CheckBox_UnChecked?: CustomIcon;
-    CheckBox_Checked?: CustomIcon;
-  };
+  resizable?: boolean                  // Allow resize the editor
+  markedjsOpt?: MarkedjsOption         // The markedjs option, see https://marked.js.org/#/USING_ADVANCED.md#options
+  customRender?: CustomRender          // Custom markedjs render
+  customIcons?: CustomIconOptions      // Custom icons for buttons
+  locales?: MdEditorLocaleOptions      // Localization
+}
+
+export interface CustomIconOptions {
+  Bold?: CustomIcon
+  Italic?: CustomIcon
+  Heading?: CustomIcon
+  Reference?: CustomIcon
+  Link?: CustomIcon
+  Image?: CustomIcon
+  UnorderedList?: CustomIcon
+  OrderedList?: CustomIcon
+  CodeBlock?: CustomIcon
+  ShowPreview?: CustomIcon
+  HidePreview?: CustomIcon
+  FullScreen?: CustomIcon
+  CheckBox_UnChecked?: CustomIcon
+  CheckBox_Checked?: CustomIcon
+}
+
+export interface MdButtonLocale {
+  title: string;
+}
+
+export interface MdButtonInserterLocale extends MdButtonLocale {
+  initText?: string;
+}
+
+export interface MdEditorLocale {
+  Buttons?: {
+    Bold?: MdButtonInserterLocale
+    Italic?: MdButtonInserterLocale
+    Heading?: MdButtonInserterLocale
+    Reference?: MdButtonInserterLocale
+    Link?: MdButtonLocale
+    Image?: MdButtonLocale
+    UnorderedList?: MdButtonInserterLocale
+    OrderedList?: MdButtonInserterLocale
+    CodeBlock?: MdButtonInserterLocale
+    ShowPreview?: MdButtonLocale
+    HidePreview?: MdButtonLocale
+    Fullscreen?: MdButtonLocale
+  },
+  Upload?: {
+    Drag?: string
+    Uploading?: string
+  }
+}
+
+export interface MdEditorLocaleOptions {
+  [key: string]: MdEditorLocale
+}
+
+export const DEFAULT_LOCALES: MdEditorLocaleOptions = {
+  en: {
+    Buttons: {
+      Bold: { title: 'Bold', initText: 'Bold Text' },
+      Italic: { title: 'Italic', initText: 'Italic Text' },
+      Heading: { title: 'Heading' },
+      Reference: { title: 'Reference' },
+      Link: { title: 'Link' },
+      Image: { title: 'Image' },
+      UnorderedList: { title: 'Unordered List', initText: '' },
+      OrderedList: { title: 'Ordered List', initText: '' },
+      CodeBlock: { title: 'Code Block', initText: 'Source Code' },
+      ShowPreview: { title: 'Show Preview' },
+      HidePreview: { title: 'Hide Preview' },
+      Fullscreen: { title: 'Fullscreen' }
+    },
+    Upload: {
+      Drag: 'Drag it here',
+      Uploading: 'Uploading'
+    }
+  }
 }
 
 export interface UploadResult {
@@ -62,7 +121,13 @@ export interface CustomIcon {
   fontClass: string
 }
 
-export const DEFAULT_ICONS = {
+export interface DefaultIconOptions {
+  fontAwesome4: CustomIconOptions
+  fontAwesome5: CustomIconOptions
+  fontAwesome6: CustomIconOptions
+}
+
+export const DEFAULT_ICONS: DefaultIconOptions = {
   fontAwesome4: {
     Bold: { fontClass: 'fa fa-bold' },
     Italic: { fontClass: 'fa fa-italic' },
