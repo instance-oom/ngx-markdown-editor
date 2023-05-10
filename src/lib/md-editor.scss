@@ -81,6 +81,8 @@
 
       &>div.dragover {
         position: relative;
+        border: 2px dashed lightgreen;
+        box-sizing: border-box;
 
         .drag-container {
           display: block;

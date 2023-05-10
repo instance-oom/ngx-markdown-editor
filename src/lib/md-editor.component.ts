@@ -338,8 +338,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   onDragleave(evt: DragEvent) {
     evt.stopImmediatePropagation();
     evt.preventDefault();
-    if (!this._hasUploadFunction) return;
     this.dragover = false;
+    if (!this._hasUploadFunction) return;
   }
 
   onAceEditorPaste(event: ClipboardEvent): void {
