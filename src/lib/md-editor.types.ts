@@ -11,6 +11,7 @@ export interface MdEditorOption {
   customRender?: CustomRender          // Custom markedjs render
   customIcons?: CustomIconOptions      // Custom icons for buttons
   locales?: MdEditorLocaleOptions      // Localization
+  placeholder?: string                 // Placeholder
 }
 
 export interface CustomIconOptions {

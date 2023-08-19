@@ -44,7 +44,8 @@ export class AppComponent {
     // },
     markedjsOpt: {
       sanitize: true
-    }
+    },
+    placeholder: 'Test'
   };
   public content: string;
   public mode: string = 'editor';
@@ -73,7 +74,7 @@ export class AppComponent {
     contentArr.push('[Link](https://www.google.com)');
     contentArr.push(`<img src="1" onerror="alert(1)" />`);
     contentArr.push('');
-    this.content = contentArr.join('\r\n');
+    // this.content = contentArr.join('\r\n');
   }
 
   togglePreviewPanel() {

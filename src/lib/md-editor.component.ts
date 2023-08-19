@@ -17,7 +17,8 @@ const DEFAULT_EDITOR_OPTION: MdEditorOption = {
   enablePreviewContentClick: false,
   resizable: false,
   customIcons: DEFAULT_ICONS.fontAwesome4,
-  locales: DEFAULT_LOCALES
+  locales: DEFAULT_LOCALES,
+  placeholder: ''
 }
 
 @Component({
@@ -109,6 +110,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
     options.locales = Object.assign({}, DEFAULT_LOCALES, value.locales);
     this._options = options;
+
+    if (this._aceEditorIns) this._aceEditorIns.setOption('placeholder', this.options.placeholder || '');
   }
   private _options: any = Object.assign({}, DEFAULT_EDITOR_OPTION);
 
@@ -198,6 +201,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
       this._onChange(this.markdownValue);
     });
     editor.on('blur', () => { this._onTouched() });
+    editor.setOption('placeholder', this.options.placeholder || '');
 
     this.onEditorLoaded.next(editor);
     this._aceEditorIns = editor;
