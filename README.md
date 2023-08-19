@@ -190,6 +190,7 @@ export class AppModule { }
       CheckBox_UnChecked?: CustomIcon;
       CheckBox_Checked?: CustomIcon;
     };
+    placeholder?: string
   }
   ```
 - upload(`Function`): For [#24](https://github.com/lon-yang/ngx-markdown-editor/issues/24), upload file by yourself

@@ -1,3 +1,7 @@
+## 5.3.2
+
+- Fix #139, Support placeholder
+
 ## 5.1.0
 
 - Fix #130
