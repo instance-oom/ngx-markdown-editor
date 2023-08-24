@@ -2,6 +2,7 @@ import { Component, ViewChild, forwardRef, Renderer2, Attribute, Input, Output, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subject } from 'rxjs';
 import { MdEditorOption, MarkedjsOption, DEFAULT_ICONS, DEFAULT_LOCALES } from './md-editor.types';
 
 declare let ace: any;
@@ -123,6 +124,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   public isFullScreen: boolean = false;
   public dragover: boolean = false;
   public isUploading: boolean = false;
+  public readonly valueChanges = new Subject<string>();
 
   public get localeText() {
     const r = Object.assign({}, DEFAULT_LOCALES[this.locale], this.options.locales[this.locale]);
@@ -134,6 +136,10 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
   //#region Markdown value and html value define
   public get markdownValue(): string {
     return this._markdownValue || '';
+  }
+  private set markdownValue(value: string) {
+    this._markdownValue = value || '';
+    this.valueChanges.next(this.markdownValue);
   }
   private _markdownValue: string;
 
@@ -209,6 +215,7 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   ngOnDestroy() {
     this._aceEditorIns && this._aceEditorIns.destroy();
+    this.valueChanges && this.valueChanges.complete();
   }
 
   writeValue(value: string): void {
@@ -354,8 +361,8 @@ export class MarkdownEditorComponent implements ControlValueAccessor, Validator 
 
   private _updateMarkdownValue(value: any, changedByUser: boolean = false) {
     const normalizedValue = typeof value === 'string' ? value : (value || '').toString();
-    if (this._markdownValue === normalizedValue) return;
-    this._markdownValue = normalizedValue;
+    if (this.markdownValue === normalizedValue) return;
+    this.markdownValue = normalizedValue;
     this._updateDom();
     if (this._aceEditorIns && !changedByUser) {
       this._isValueSettedByprogrammatically = true;

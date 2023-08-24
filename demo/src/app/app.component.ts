@@ -1,6 +1,6 @@
-import { Component, SecurityContext } from '@angular/core';
+import { Component, SecurityContext, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UploadResult, MdEditorOption } from './../../../src/public_api';
+import { UploadResult, MdEditorOption, MarkdownEditorComponent } from './../../../src/public_api';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +8,9 @@ import { UploadResult, MdEditorOption } from './../../../src/public_api';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  @ViewChild(MarkdownEditorComponent)
+  mdEditor: MarkdownEditorComponent;
 
   public maxLength = 300;
   public options: MdEditorOption = {
@@ -75,6 +78,11 @@ export class AppComponent {
     contentArr.push(`<img src="1" onerror="alert(1)" />`);
     contentArr.push('');
     // this.content = contentArr.join('\r\n');
+  }
+
+  ngAfterViewInit() {
+    console.log('aaa', this.mdEditor)
+    this.mdEditor.valueChanges.subscribe(d => console.log(111, d));
   }
 
   togglePreviewPanel() {
