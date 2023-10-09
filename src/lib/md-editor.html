@@ -1,7 +1,8 @@
 <div class="md-editor-container" [class.fullscreen]="isFullScreen" [class.md-editor-resizable]="options?.resizable" [style.height]="height">
   <div class="md-layout">
     <div class="tool-bar" *ngIf="!hideToolbar && mode != 'preview'">
-      <div class="btn-group">
+      <div class="btn-group"
+        *ngIf="!hideIcons.Bold || !hideIcons.Italic || !hideIcons.Heading || !hideIcons.Reference">
         <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Bold.title" (click)="insertContent('Bold')"
           *ngIf="!hideIcons.Bold">
           <i [class]="options.customIcons.Bold.fontClass"></i>
@@ -19,7 +20,8 @@
           <i [class]="options.customIcons.Reference.fontClass"></i>
         </button>
       </div>
-      <div class="btn-group">
+      <div class="btn-group"
+        *ngIf="!hideIcons.Link || !hideIcons.Image">
         <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.Link.title" (click)="insertContent('Link')"
           *ngIf="!hideIcons.Link">
           <i [class]="options.customIcons.Link.fontClass"></i>
@@ -29,7 +31,8 @@
           <i [class]="options.customIcons.Image.fontClass"></i>
         </button>
       </div>
-      <div class="btn-group">
+      <div class="btn-group"
+        *ngIf="!hideIcons.Ul || !hideIcons.Ol || !hideIcons.Code">
         <button class="btn btn-sm btn-default" type="button" [attr.title]="buttonText.UnorderedList.title" (click)="insertContent('Ul')"
           *ngIf="!hideIcons.Ul">
           <i [class]="options.customIcons.UnorderedList.fontClass"></i>
@@ -43,17 +46,20 @@
           <i [class]="options.customIcons.CodeBlock.fontClass"></i>
         </button>
       </div>
-      <div class="btn-group">
+      <div class="btn-group"
+        *ngIf="!hideIcons.TogglePreview">
         <button class="btn btn-sm btn-default" type="button"
           [attr.title]="showPreviewPanel ? buttonText.HidePreview.title : buttonText.ShowPreview.title" (click)="togglePreview()"
           *ngIf="!hideIcons.TogglePreview">
           <i [class]="showPreviewPanel ? options.customIcons.ShowPreview.fontClass : options.customIcons.HidePreview.fontClass"></i>
         </button>
       </div>
-      <div class="btn-group">
+      <div class="btn-group"
+        *ngIf="!hideIcons.CustomBtns">
         <ng-content select="[custom-btns]"></ng-content>
       </div>
-      <div class="btn-group pull-right hide-split">
+      <div class="btn-group pull-right hide-split"
+        *ngIf="!hideIcons.FullScreen">
         <button class="btn btn-sm btn-default" type="button" [class.active]="isFullScreen" [attr.title]="buttonText.Fullscreen.title"
           (click)="fullScreen()" *ngIf="!hideIcons.FullScreen">
           <i [class]="options.customIcons.FullScreen.fontClass"></i>

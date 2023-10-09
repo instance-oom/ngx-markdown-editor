@@ -161,7 +161,7 @@ export class AppModule { }
   {  
     showPreviewPanel?: boolean    // Show preview panel, Default is true
     showBorder?: boolean          // Show editor component's border. Default is true
-    hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen']. Default is empty
+    hideIcons?: Array<string>     // ['Bold', 'Italic', 'Heading', 'Reference', 'Link', 'Image', 'Ul', 'Ol', 'Code', 'TogglePreview', 'FullScreen', 'CustomBtns']. Default is empty
     usingFontAwesome5?: boolean   // Using font awesome with version 5, Default is false
     fontAwesomeVersion?: '4' | '5' | '6'   // FontAwesome Version, 4/5/6, default is 4
     scrollPastEnd?: number        // The option for ace editor. Default is 0
