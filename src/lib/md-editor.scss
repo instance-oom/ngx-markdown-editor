@@ -46,7 +46,11 @@
           display: none;
         }
 
-        &::before {
+        &:empty {
+          display: none;
+        }
+
+        &:not(:empty)::before {
           content: ' ';
           background-color: darkgray;
           width: 1px;
